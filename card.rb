@@ -1,10 +1,11 @@
 class Card
 
-attr_reader :num, :kind, :name, :text, :att, :pt
+attr_reader :num, :kind, :name, :text, :att, :pt, :id
   def initialize(kind, num)
     card = CARDDATA[kind][num]
   	@kind = kind
   	@num = num
+    @id = card.id
   	@name = card.name
     @text = card.text
     @att = card.att if kind == :monster

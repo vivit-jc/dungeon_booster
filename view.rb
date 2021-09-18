@@ -169,7 +169,7 @@ class View
 
   def draw_info
     Window.draw(20,260,@infoback)
-    Window.draw_font(30,274,"HP #{@game.hp} / #{@game.max_hp}  逃げる 残り#{@game.run_max-@game.run}回",Font14)
+    Window.draw_font(30,274,"HP #{@game.hp} / #{@game.max_hp}  逃げる 残り#{@game.rest_run}回",Font14)
     Window.draw_font(30,294,"残り #{@game.deck.size} 枚",Font14)
     Window.draw_font(30,314,"捨札 #{@game.stock.size} 枚",Font14)
     
@@ -178,6 +178,8 @@ class View
   def draw_log
     Window.draw_font(20,190,@game.log[@game.log.size-1],Font14) if @game.log.size >= 1
     Window.draw_font(20,210,@game.log[@game.log.size-2],Font14) if @game.log.size >= 2
+    Window.draw_font(20,230,@game.log[@game.log.size-3],Font14) if @game.log.size >= 3
+    
   end
 
   def draw_xy

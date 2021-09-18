@@ -21,7 +21,7 @@ def click_monster(num,com)
     add_log(card.name+"を倒した")
     @dungeon.delete_at num
   elsif com == 1 #逃げる
-    if @run >= @run_max
+    if rest_run <= 0
       add_log("これ以上逃げられない")
     else
       add_log(card.name+"から逃げた")
@@ -92,6 +92,28 @@ def calc_status
   @max_hp = @base_hp+@e_shield.pt.to_i+@hp_buff if @e_shield
 end
 
+def calc_trap
+  @dungeon.select{|c|c.trap?}.each do |trap|
+    if rand(4) == 0
+      add_log(trap.name+"をうまく避けた")
+      next
+    else
+      add_log(trap.name+"を踏んだ")
+      calc_trap_d(trap.id)
+    end
+  end
+end
+
+def calc_trap_d(id)
+  case(id)
+  when 0 #トラバサミ
+    @run_max_floor = 0
+  when 1 #木の罠
+    damage(2)
+  end
+
+end
+
 def go_to_next_floor(first_floor=false)
   return false if @deck.size == 0
   if monster_exist?
@@ -101,8 +123,8 @@ def go_to_next_floor(first_floor=false)
   @dungeon.each do |c|
     @stock << c if !c.trap? and !c.rune? and !c.blank? 
   end
-  @run = 0
   @dungeon = []
+  refresh_status
 
   if first_floor
     no_trap = @deck.select{|c|!c.trap?}
@@ -118,6 +140,7 @@ def go_to_next_floor(first_floor=false)
     end
     #罠を先頭に持ってくる
     @dungeon = @dungeon.select{|c|c.trap?}+@dungeon.select{|c|!c.trap?}
+    calc_trap
     add_log("この層の最深部に到達した") if @deck.size == 0 and !@withdraw
   end
 end
@@ -137,6 +160,11 @@ def start_withdrawal
   @deck.shuffle!
   go_to_next_floor
 
+end
+
+def refresh_status
+  @run_max_floor = nil
+  @run = 0
 end
 
 def sort_bag

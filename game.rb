@@ -30,6 +30,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @hp_buff = 0
     @run = 0
     @run_max = 2
+    @run_max_floor = nil
     @withdraw = false
 
     @log = []
@@ -65,6 +66,13 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @log.push str
   end
 
+  def damage(num)
+    @hp -= num
+  end
+
+  def check_death
+  end
+
   def monster_exist_front?(num)
     num.times do |i|
       return true if @dungeon[i].kind == :monster
@@ -74,6 +82,16 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
 
   def monster_exist?
     @dungeon.find{|c|c.kind == :monster}
+  end
+
+  def rest_run
+    if @run_max_floor
+      return @run_max_floor #今の所トラバサミのみが関係する
+    elsif @run_max <= @run
+      return 0
+    else
+      return @run_max - @run
+    end
   end
 
 end
