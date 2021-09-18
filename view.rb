@@ -9,6 +9,9 @@ class View
     @dungeonback = Image.new(100,100)
     @dungeonback.box_fill(0,0,100,100,DARKGRAY)
 
+    @dungeonback2 = Image.new(100,100)
+    @dungeonback2.box_fill(0,0,100,100,DARKGRAY2)
+
     @infoback = Image.new(200,200)
     @infoback.box_fill(0,0,200,200,DARKGRAY)
 
@@ -71,41 +74,50 @@ class View
   def draw_dungeon
     @game.dungeon.each_with_index do |card, i|
       x = 20+120*i
-      Window.draw(x,10,@dungeonback)
+      pos = @controller.pos_dungeon == i
+      if @game.click_mode == :select_monster and pos
+        Window.draw(x,10,@dungeonback2)
+      else
+        Window.draw(x,10,@dungeonback)
+      end
       if card.kind != :monster and card.kind != :blank
         Window.draw_scale(x-53,-44,Image[card.kind],0.2,0.2) 
       end
-      pos = @controller.pos_dungeon == i
       if card.kind == :rune
         Window.draw_font(x+3,13,"隠されたルーン",Font14)
       else
         Window.draw_font(x+3,13,card.name,Font14)  
       end
       if pos
-        if card.kind == :rune
-          Window.draw_font(20,130,"隠されたルーン",Font14)
-          Window.draw_font(20,150,"唱えると、ルーンの魔法を発動する",Font14)
+        if @game.click_mode == :select_monster
+          #対象選択時はコマンドは表示しない
         else
-          Window.draw_font(20,130,card.name,Font14)
-          Window.draw_font(20,150,card.text,Font14)
-        end
-        pdc = @controller.pos_dungeon_command
-        next if @game.monster_exist_front?(i)
-        if card.monster?
-          Window.draw_font(x+3,30,"戦う",Font16,mouseover_color(pdc == 0))
-          Window.draw_font(x+3,50,"逃げる",Font16,mouseover_color(pdc == 1))
-        elsif card.rune?
-          Window.draw_font(x+3,30,"唱える",Font16,mouseover_color(pdc == 0))          
-        elsif card.item?
-          Window.draw_font(x+3,30,"拾う",Font16,mouseover_color(pdc == 0))
-          if !card.equip? and !card.treasure?
-            Window.draw_font(x+3,50,"使う",Font16,mouseover_color(pdc == 1))
-          end
+          draw_dungeon_command(i)
         end
       end
-      
     end
+  end
 
+  def draw_dungeon_command(num)
+    card = @game.dungeon[num]
+    x = 20+120*num
+    if card.kind == :rune
+      Window.draw_font(20,130,"隠されたルーン",Font14)
+      Window.draw_font(20,150,"唱えると、ルーンの魔法を発動する",Font14)
+    else
+      Window.draw_font(20,130,card.name,Font14)
+      Window.draw_font(20,150,card.text,Font14)
+    end
+    pdc = @controller.pos_dungeon_command
+    return if @game.monster_exist_front?(num)
+    if card.monster?
+      Window.draw_font(x+3,30,"戦う",Font16,mouseover_color(pdc == 0))
+      Window.draw_font(x+3,50,"逃げる",Font16,mouseover_color(pdc == 1))
+    elsif card.rune?
+      Window.draw_font(x+3,30,"唱える",Font16,mouseover_color(pdc == 0))          
+    elsif card.item?
+      Window.draw_font(x+3,30,"拾う",Font16,mouseover_color(pdc == 0))
+    end
   end
 
   def draw_bag
@@ -116,7 +128,7 @@ class View
       y = 260+(i/5).floor*70
       Window.draw(x,y,@itemback)
       pos = @controller.pos_bag == i
-      if pos
+      if pos and !@game.click_mode
         Window.draw_font(260,400,card.name,Font14)
         Window.draw_font(260,420,card.text,Font14)
         pbc = @controller.pos_bag_command
@@ -184,7 +196,7 @@ class View
     Window.draw_font(30,30,"GAME CLEAR",Font50)    
     Window.draw_font(30,400,"タイトルに戻る",Font20,mouseover_color(@controller.pos_back_to_title))
   end
-  
+
   def draw_gameover
     [@game.log.size,10].min.times do |i|
       Window.draw_font(30,130+18*i,@game.log[@game.log.size-1-i],Font14)

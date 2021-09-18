@@ -35,21 +35,12 @@ class Controller
 
   def click_on_game
     case @game.click_mode
-    when :select_invasion_bonus, :select_great_person_bonus, :select_wonder_from_engineer
-      @game.click_bonus(pos_bonus) if pos_bonus
-      return
-    when :select_tech_from_scientist
-      @game.finish_tech_from_scientist(@game.get_tech_sym_from_xy(pos_tech_view)) if pos_tech_view
-      return
-    when :select_hand
-      return unless pos_hand
-      @game.click_hand(pos_hand)
-      return
-    when :delete_unit
-      if pos_unit
-        @game.click_unit(pos_unit)
+    when :select_monster
+      if pos_dungeon and @game.dungeon[pos_dungeon].monster?
+        @game.click_target_monster(pos_dungeon) 
       else
-        @game.cancel_delete_unit
+        @game.add_log(@game.using_item[:card].name+"を使うのをやめた")
+        @game.cancel_target_select
       end
       return
     end

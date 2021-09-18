@@ -7,11 +7,6 @@ def click_dungeon(num,com)
   card = @dungeon[num]
   if card.item? and com == 0
     take_item(num)
-  elsif (card.potion? or card.scroll?) and com == 1
-    if card.potion?
-      use_potion(card)
-    end
-    @dungeon[num].delete_at num
   elsif card.monster?
     click_monster(num, com)
   elsif card.rune?
@@ -22,8 +17,8 @@ end
 def click_monster(num,com)
   card = @dungeon[num]
   if com == 0 #戦う
-    d = card.pt
-    d -= @e_weapon.pt if @e_weapon 
+    d = card.hp
+    d -= @e_weapon.pt if @e_weapon
     d = 0 if d < 0
     damage(d,card.name)
     add_log(card.name+"を倒した") if @hp > 0
@@ -39,6 +34,29 @@ def click_monster(num,com)
       @dungeon.reject!{|c|c.rune?}
     end
   end
+end
+
+def click_target_monster(num)
+  return false unless @dungeon[num].monster?
+  card = @using_item[:card]
+  monster = @dungeon[num]
+  #対象を選ぶタイプの巻物の処理
+  if card.scroll? and card.select_target
+    p "あやしい"
+    case(card.id)
+    when 0 #火炎
+      add_log("火炎の巻物を使った "+monster.name+"に5ダメージを与えた")
+      monster.hp -= 5
+      if monster.hp <= 0
+        add_log(monster.name+"を倒した")
+        dungeon.delete_at num
+      end
+    end
+    p "ここまで？"
+    @click_mode = nil
+    @using_item = nil
+  end
+
 end
 
 def click_rune(num)
@@ -88,9 +106,14 @@ def click_bag(num,com)
       add_log(card.name+"を眺めた。"+mes[rand(4)])
     else
       if card.potion?
-        use_potion(card)
+        use_potion(card.id)
+        @bag.delete_at num
       end
-      @bag.delete_at num
+      if card.scroll? and card.select_target
+        @click_mode = :select_monster
+        @using_item = {card: card, target: nil}
+        add_log("どれに対して使う？")
+      end
     end
   elsif com == 1 #捨てる
     add_log(card.name+"を捨てた")
@@ -200,6 +223,11 @@ end
 def sort_bag
   @bag.sort!{|a, b| b.kind <=> a.kind } 
   @bag = @bag.select{|c|!c.treasure?}+@bag.select{|c|c.treasure?}
+end
+
+def cancel_target_select
+  @using_item = nil
+  @click_mode = nil
 end
 
 end

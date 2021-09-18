@@ -9,10 +9,11 @@ include Item
 
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :hp, :max_hp, :log, :e_weapon, :e_shield,
-:run, :run_max, :withdraw, :gameover, :dungeon_max
+:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_item
 
 
   def initialize
+
     @status = :title
     @game_status = nil
     @game_status_memo = nil
@@ -33,8 +34,9 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @run = 0
     @run_max = 2
     @run_max_floor = nil
-    @withdraw = false
+    @using_item = nil
 
+    @withdraw = false
     @game_clear = false
     @gameover = false
     @completed = false
@@ -50,14 +52,14 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
   end
 
   def init_testmode
-    @click_mode = :dungeon_attack
     @place = :dungeon
   end
 
   def init_deck
     temp_deck = [[:monster,0],[:monster,0],[:monster,0],[:monster,0],[:monster,0],
     [:monster,1],[:monster,1],[:monster,1],[:monster,2],[:monster,3],
-    [:scroll,0],[:weapon,0],[:shield,0],[:potion,0],[:potion,0],[:potion,0],
+    [:scroll,0],[:scroll,0],[:scroll,0],[:scroll,0],[:scroll,0],[:scroll,0],
+    #[:scroll,0],[:weapon,0],[:shield,0],[:potion,0],[:potion,0],[:potion,0],
     [:treasure,0],[:trap,0],[:trap,1]]
     temp_deck << [:rune,rand(2)]
     temp_deck.each_with_index do |e,i|
