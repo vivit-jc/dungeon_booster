@@ -1,6 +1,6 @@
 class Card
 
-attr_reader :num, :kind, :name, :text, :att, :pt, :id
+attr_reader :num, :kind, :name, :text, :att, :pt, :id, :hp
   def initialize(kind, num)
     card = CARDDATA[kind][num]
   	@kind = kind
@@ -9,10 +9,19 @@ attr_reader :num, :kind, :name, :text, :att, :pt, :id
   	@name = card.name
     @text = card.text
     @pt = card.pt.to_i
+    @hp = pt if monster?
   end
 
   def monster?
     return @kind == :monster
+  end
+
+  def potion?
+    return @kind == :potion
+  end
+
+  def scroll?
+    return @kind == :scroll
   end
 
   def rune?

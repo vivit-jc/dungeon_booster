@@ -1,9 +1,11 @@
 require_remote './card.rb'
 require_remote './click.rb'
+require_remote './item.rb'
 
 class Game
 
 include Click
+include Item
 
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :hp, :max_hp, :log, :e_weapon, :e_shield,

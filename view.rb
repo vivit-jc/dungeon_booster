@@ -184,7 +184,7 @@ class View
     Window.draw_font(30,30,"GAME CLEAR",Font50)    
     Window.draw_font(30,400,"タイトルに戻る",Font20,mouseover_color(@controller.pos_back_to_title))
   end
-
+  
   def draw_gameover
     [@game.log.size,10].min.times do |i|
       Window.draw_font(30,130+18*i,@game.log[@game.log.size-1-i],Font14)

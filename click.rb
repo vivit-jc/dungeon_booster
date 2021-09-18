@@ -7,6 +7,11 @@ def click_dungeon(num,com)
   card = @dungeon[num]
   if card.item? and com == 0
     take_item(num)
+  elsif (card.potion? or card.scroll?) and com == 1
+    if card.potion?
+      use_potion(card)
+    end
+    @dungeon[num].delete_at num
   elsif card.monster?
     click_monster(num, com)
   elsif card.rune?
@@ -37,12 +42,14 @@ def click_monster(num,com)
 end
 
 def click_rune(num)
+  card = @dungeon[num]
   if monster_exist?
     add_log("この階にはまだモンスターがいる")
     return false
   end
   add_log("隠されたルーンを唱えた")
-  add_log(@dungeon[num].name+"が発動した "+@dungeon[num].text)
+  add_log(card.name+"が発動した "+card.text)
+  chant_rune(card.id)
   @dungeon.delete_at num
 end
 
@@ -77,9 +84,12 @@ def click_bag(num,com)
     add_log(card.name+"を装備した")
   elsif com == 0 #使う
     if card.treasure?
-      add_log(card.name+"を眺めた")
+      mes = ["これはなかなかの値打ち物だ。",card.name+"は上品に輝いている。","魔術的な仕掛けは特に無さそうだ。","ダンジョンのお宝は冒険者の物。"]
+      add_log(card.name+"を眺めた。"+mes[rand(4)])
     else
-      add_log(card.name+"を使った")
+      if card.potion?
+        use_potion(card)
+      end
       @bag.delete_at num
     end
   elsif com == 1 #捨てる
