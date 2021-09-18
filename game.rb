@@ -7,7 +7,7 @@ include Click
 
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :hp, :max_hp, :log, :e_weapon, :e_shield,
-:run, :run_max, :withdraw
+:run, :run_max, :withdraw, :gameover
 
 
   def initialize
@@ -32,6 +32,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @run_max = 2
     @run_max_floor = nil
     @withdraw = false
+    @gameover = false
 
     @log = []
 
@@ -66,11 +67,17 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @log.push str
   end
 
-  def damage(num)
+  def damage(num,src)
     @hp -= num
+    check_death(src)
   end
 
-  def check_death
+  def check_death(src)
+    return false if @hp > 0
+    add_log(src+"により致命傷を負った")
+    add_log("あなたは息絶えた・・・")
+    @gameover = true
+    @view_status = :gameover
   end
 
   def monster_exist_front?(num)

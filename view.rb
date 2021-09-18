@@ -51,14 +51,8 @@ class View
       #refresh_gages
       #refresh_back
     end
-    if @game.view_status == :tech_view
-      refresh_tech_view if @view_status_buff != :tech_view
-      @view_status_buff = :tech_view
-      draw_tech_view
-    elsif @game.view_status == :product_view
-      refresh_product_view if @view_status_buff != :product_view
-      @view_status_buff = :product_view
-      draw_product_view
+    if @game.view_status == :gameover
+      draw_gameover
     elsif @game.view_status == :log_view
       draw_log_view
     else
@@ -179,7 +173,14 @@ class View
     Window.draw_font(20,190,@game.log[@game.log.size-1],Font14) if @game.log.size >= 1
     Window.draw_font(20,210,@game.log[@game.log.size-2],Font14) if @game.log.size >= 2
     Window.draw_font(20,230,@game.log[@game.log.size-3],Font14) if @game.log.size >= 3
-    
+  end
+
+  def draw_gameover
+    [@game.log.size,10].min.times do |i|
+      Window.draw_font(30,300-18*i,@game.log[i],Font14)
+    end
+    Window.draw_font(30,30,"GAME OVER",Font50)    
+    Window.draw_font(30,400,"タイトルに戻る",Font20,mouseover_color(@controller.pos_back_to_title))
   end
 
   def draw_xy

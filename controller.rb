@@ -54,13 +54,14 @@ class Controller
       return
     end
 
-  
     if @game.view_status == :main_view
       @game.click_dungeon(pos_dungeon,pos_dungeon_command) if pos_dungeon_command
       @game.click_bag(pos_bag,pos_bag_command) if pos_bag_command
       @game.go_to_next_floor if pos_button == 0
       @game.start_withdrawal if pos_button == 1
       @game.sort_bag if pos_bag_sort
+    elsif @game.view_status == :gameover
+      @game.initialize if pos_back_to_title
     end
 
   end
@@ -125,6 +126,10 @@ class Controller
       return i if mcheck(500,160+40*i,600,190+40*i)
     end
     return false
+  end
+
+  def pos_back_to_title
+    return mcheck(30,400,170,420)
   end
 
   def get_width(str)

@@ -8,8 +8,7 @@ attr_reader :num, :kind, :name, :text, :att, :pt, :id
     @id = card.id
   	@name = card.name
     @text = card.text
-    @att = card.att if kind == :monster
-    @pt = card.pt
+    @pt = card.pt.to_i
   end
 
   def monster?

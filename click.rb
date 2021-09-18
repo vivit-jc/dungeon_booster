@@ -17,8 +17,11 @@ end
 def click_monster(num,com)
   card = @dungeon[num]
   if com == 0 #戦う
-    @hp -= card.att.to_i
-    add_log(card.name+"を倒した")
+    d = card.pt
+    d -= @e_weapon.pt if @e_weapon 
+    d = 0 if d < 0
+    damage(d,card.name)
+    add_log(card.name+"を倒した") if @hp > 0
     @dungeon.delete_at num
   elsif com == 1 #逃げる
     if rest_run <= 0
@@ -88,8 +91,11 @@ def click_bag(num,com)
 end
 
 def calc_status
-  @att = @e_weapon.pt.to_i+@att_buff if @e_weapon
-  @max_hp = @base_hp+@e_shield.pt.to_i+@hp_buff if @e_shield
+  @att = att_buff
+  @att += @e_weapon.pt if @e_weapon
+  @max_hp = @base_hp + @hp_buff
+  @max_hp += @e_shield.pt if @e_shield
+  @hp = @max_hp if @max_hp <= @hp
 end
 
 def calc_trap
@@ -108,8 +114,8 @@ def calc_trap_d(id)
   case(id)
   when 0 #トラバサミ
     @run_max_floor = 0
-  when 1 #木の罠
-    damage(2)
+  when 1 #矢の罠
+    damage(2,"矢の罠")
   end
 
 end
