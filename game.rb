@@ -7,7 +7,7 @@ include Click
 
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :hp, :max_hp, :log, :e_weapon, :e_shield,
-:run, :run_max
+:run, :run_max, :withdraw
 
 
   def initialize
@@ -24,13 +24,13 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @hp = 10
     @max_hp = 10
     @base_hp = 10
-    @dungeon_max = 15
     @e_weapon = nil
     @e_shield = nil
     @att_buff = 0
     @hp_buff = 0
     @run = 0
     @run_max = 2
+    @withdraw = false
 
     @log = []
 
@@ -56,6 +56,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     temp_deck.each_with_index do |e,i|
       @deck.push Card.new(e[0],e[1])
     end
+    @dungeon_max = @deck.size
     @deck.shuffle!
     go_to_next_floor(true)
   end

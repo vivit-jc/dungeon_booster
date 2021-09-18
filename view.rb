@@ -146,18 +146,25 @@ class View
 
   def draw_button
     x = 500
-    Window.draw_font(520,130,"前進中",Font20)
+    str = @game.withdraw ? "撤退中" : "前進中"
+    Window.draw_font(520,130,str,Font20)
 
     Window.draw(500,160,@buttonback)
-    if @game.deck.size == 0
-      color = {color: BLACK}
+    if @game.deck.size == 0 and @game.withdraw
+      Window.draw_font(510,165,"脱出する",Font20,mouseover_color(@controller.pos_button == 0))
+    elsif @game.deck.size == 0
+      Window.draw_font(510,165,"次の階へ",Font20,{color: BLACK})
     else
-      color = mouseover_color(@controller.pos_button == 0)
+      Window.draw_font(510,165,"次の階へ",Font20,mouseover_color(@controller.pos_button == 0))
     end
-    Window.draw_font(510,165,"次の階へ",Font20,color)
 
     Window.draw(500,200,@buttonback)
-    Window.draw_font(510,205,"撤退する",Font20,mouseover_color(@controller.pos_button == 1))
+    if @game.withdraw
+      color = {color: BLACK}
+    else
+      color = mouseover_color(@controller.pos_button == 1)
+    end
+    Window.draw_font(510,205,"撤退する",Font20,color)
   end
 
   def draw_info

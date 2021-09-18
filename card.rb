@@ -27,6 +27,10 @@ attr_reader :num, :kind, :name, :text, :att, :pt
     return @kind == :treasure
   end
 
+  def blank?
+    return @kind == :blank
+  end
+
   def item?
     case @kind
     when :scroll,:weapon,:shield,:potion,:treasure

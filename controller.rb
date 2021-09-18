@@ -59,6 +59,7 @@ class Controller
       @game.click_dungeon(pos_dungeon,pos_dungeon_command) if pos_dungeon_command
       @game.click_bag(pos_bag,pos_bag_command) if pos_bag_command
       @game.go_to_next_floor if pos_button == 0
+      @game.start_withdrawal if pos_button == 1
       @game.sort_bag if pos_bag_sort
     end
 

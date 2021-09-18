@@ -21,7 +21,7 @@ def click_monster(num,com)
     add_log(card.name+"を倒した")
     @dungeon.delete_at num
   elsif com == 1 #逃げる
-    if @run >= 2
+    if @run >= @run_max
       add_log("これ以上逃げられない")
     else
       add_log(card.name+"から逃げた")
@@ -99,7 +99,7 @@ def go_to_next_floor(first_floor=false)
     return false
   end
   @dungeon.each do |c|
-    @stock << c if c.kind != :trap and c.kind != :rune
+    @stock << c if !c.trap? and !c.rune? and !c.blank? 
   end
   @run = 0
   @dungeon = []
@@ -118,9 +118,25 @@ def go_to_next_floor(first_floor=false)
     end
     #罠を先頭に持ってくる
     @dungeon = @dungeon.select{|c|c.trap?}+@dungeon.select{|c|!c.trap?}
-    add_log("この層の最深部に到達した") if @deck.size == 0
+    add_log("この層の最深部に到達した") if @deck.size == 0 and !@withdraw
   end
-  
+end
+
+def start_withdrawal
+  if monster_exist?
+    add_log("この階にはまだモンスターがいる")
+    return false
+  end
+  @withdraw = true
+  @dungeon = []
+  @deck = @stock
+  @stock = []
+  (@dungeon_max-@deck.size-5).times do
+    @deck << Card.new(:blank,0)
+  end
+  @deck.shuffle!
+  go_to_next_floor
+
 end
 
 def sort_bag

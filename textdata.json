@@ -1,6 +1,6 @@
 {
 	"blank":[
-	    {"name":"(何も無い)","text":""}	
+	    {"name":"","text":""}	
 	],
 	"monster":[
 		{"name":"スライム","att":2,"text":""},
