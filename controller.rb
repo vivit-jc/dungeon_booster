@@ -60,7 +60,7 @@ class Controller
       @game.go_to_next_floor if pos_button == 0
       @game.start_withdrawal if pos_button == 1
       @game.sort_bag if pos_bag_sort
-    elsif @game.view_status == :gameover
+    elsif @game.view_status == :gameover or @game.view_status == :game_clear
       @game.initialize if pos_back_to_title
     end
 

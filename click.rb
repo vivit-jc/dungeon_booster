@@ -91,7 +91,7 @@ def click_bag(num,com)
 end
 
 def calc_status
-  @att = att_buff
+  @att = @att_buff
   @att += @e_weapon.pt if @e_weapon
   @max_hp = @base_hp + @hp_buff
   @max_hp += @e_shield.pt if @e_shield
@@ -121,11 +121,21 @@ def calc_trap_d(id)
 end
 
 def go_to_next_floor(first_floor=false)
-  return false if @deck.size == 0
   if monster_exist?
     add_log("この階にはまだモンスターがいる")
     return false
   end
+  if @deck.size == 0 and @withdraw
+    @game_clear = true
+    @view_status = :game_clear
+    if @completed
+     add_log("あなたはダンジョンを踏破し、無事生還した！")
+    else
+     add_log("あなたはダンジョンから無事脱出した！")
+    end
+    return false
+  end
+  return false if @deck.size == 0
   @dungeon.each do |c|
     @stock << c if !c.trap? and !c.rune? and !c.blank? 
   end
@@ -147,11 +157,15 @@ def go_to_next_floor(first_floor=false)
     #罠を先頭に持ってくる
     @dungeon = @dungeon.select{|c|c.trap?}+@dungeon.select{|c|!c.trap?}
     calc_trap
-    add_log("この層の最深部に到達した") if @deck.size == 0 and !@withdraw
+    if @deck.size == 0 and !@withdraw
+      add_log("この層の最深部に到達した") 
+      @completed = true
+    end
   end
 end
 
 def start_withdrawal
+  return false if @deck.size+5 >= @dungeon_max
   if monster_exist?
     add_log("この階にはまだモンスターがいる")
     return false

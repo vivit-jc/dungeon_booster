@@ -7,7 +7,7 @@ include Click
 
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :hp, :max_hp, :log, :e_weapon, :e_shield,
-:run, :run_max, :withdraw, :gameover
+:run, :run_max, :withdraw, :gameover, :dungeon_max
 
 
   def initialize
@@ -32,7 +32,10 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @run_max = 2
     @run_max_floor = nil
     @withdraw = false
+
+    @game_clear = false
     @gameover = false
+    @completed = false
 
     @log = []
 

@@ -53,6 +53,8 @@ class View
     end
     if @game.view_status == :gameover
       draw_gameover
+    elsif @game.view_status == :game_clear
+      draw_game_clear
     elsif @game.view_status == :log_view
       draw_log_view
     else
@@ -145,7 +147,7 @@ class View
 
     Window.draw(500,160,@buttonback)
     if @game.deck.size == 0 and @game.withdraw
-      Window.draw_font(510,165,"脱出する",Font20,mouseover_color(@controller.pos_button == 0))
+      Window.draw_font(510,165,"帰還する",Font20,mouseover_color(@controller.pos_button == 0))
     elsif @game.deck.size == 0
       Window.draw_font(510,165,"次の階へ",Font20,{color: BLACK})
     else
@@ -153,7 +155,7 @@ class View
     end
 
     Window.draw(500,200,@buttonback)
-    if @game.withdraw
+    if @game.withdraw or @game.deck.size+5 >= @game.dungeon_max
       color = {color: BLACK}
     else
       color = mouseover_color(@controller.pos_button == 1)
@@ -175,9 +177,17 @@ class View
     Window.draw_font(20,230,@game.log[@game.log.size-3],Font14) if @game.log.size >= 3
   end
 
+  def draw_game_clear
+    [@game.log.size,10].min.times do |i|
+      Window.draw_font(30,130+18*i,@game.log[@game.log.size-1-i],Font14)
+    end
+    Window.draw_font(30,30,"GAME CLEAR",Font50)    
+    Window.draw_font(30,400,"タイトルに戻る",Font20,mouseover_color(@controller.pos_back_to_title))
+  end
+
   def draw_gameover
     [@game.log.size,10].min.times do |i|
-      Window.draw_font(30,300-18*i,@game.log[i],Font14)
+      Window.draw_font(30,130+18*i,@game.log[@game.log.size-1-i],Font14)
     end
     Window.draw_font(30,30,"GAME OVER",Font50)    
     Window.draw_font(30,400,"タイトルに戻る",Font20,mouseover_color(@controller.pos_back_to_title))
