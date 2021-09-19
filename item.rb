@@ -4,6 +4,7 @@ def use_potion(id)
   case(id)
   when 0 # 回復薬
     @hp = @max_hp
+    Sound[:potion].play
     add_log("回復薬を飲んだ。HPが全回復した。")
   end
 end

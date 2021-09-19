@@ -9,7 +9,7 @@ include Item
 
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :hp, :max_hp, :log, :e_weapon, :e_shield,
-:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_item
+:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_item, :help_page
 
 
   def initialize
@@ -42,12 +42,14 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @completed = false
 
     @log = []
+    @help_page = nil
 
     init_testmode
     init_deck
   end
 
   def start
+    Sound[:click].play
     @status = :game
   end
 
@@ -80,6 +82,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
 
   def check_death(src)
     return false if @hp > 0
+    Sound[:gameover].play
     add_log(src+"により致命傷を負った")
     add_log("あなたは息絶えた・・・")
     @gameover = true

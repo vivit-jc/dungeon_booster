@@ -50,17 +50,16 @@ class View
   end
 
   def draw_game
-    if Input.mouse_push?( M_LBUTTON )
-      #refresh_gages
-      #refresh_back
-    end
-    if @game.view_status == :gameover
+    case(@game.view_status)
+    when :gameover
       draw_gameover
-    elsif @game.view_status == :game_clear
+    when :game_clear
       draw_game_clear
-    elsif @game.view_status == :log_view
+    when :log_view
       draw_log_view
-    else
+    when :help
+      draw_help
+    when :main_view
       @view_status_buff = :main_view
       draw_dungeon
       draw_bag
@@ -68,7 +67,6 @@ class View
       draw_log
       draw_button
     end
-
   end
 
   def draw_dungeon
@@ -80,8 +78,8 @@ class View
       else
         Window.draw(x,10,@dungeonback)
       end
-      if !card.monster? and !card.blank?
-        Window.draw_scale(x-53,-44,Image[card.kind],0.2,0.2) 
+      unless card.blank?
+        Window.draw_scale(x-53,-44,Image[card.kind],0.2,0.2)
       end
       if card.rune?
         Window.draw_font(x+3,13,"隠されたルーン",Font14)
@@ -156,6 +154,9 @@ class View
     end
     Window.draw(540,330,@itemback)
     Window.draw_font(552,350,"整理",Font16,mouseover_color(@controller.pos_bag_sort))
+    Window.draw(540,400,@itemback)
+    Window.draw_font(547,420,"ヘルプ",Font16,mouseover_color(@controller.pos_help))
+    
   end
 
   def draw_button
@@ -223,6 +224,11 @@ class View
     end
     Window.draw_font(30,30,"GAME OVER",Font50)    
     Window.draw_font(30,400,"タイトルに戻る",Font20,mouseover_color(@controller.pos_back_to_title))
+  end
+
+  def draw_help
+    Window.draw(0,0,Image[:help1]) if @game.help_page == 0
+    Window.draw(0,0,Image[:help2]) if @game.help_page == 1
   end
 
   def draw_xy

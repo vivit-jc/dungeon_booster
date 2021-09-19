@@ -51,8 +51,12 @@ class Controller
       @game.go_to_next_floor if pos_button == 0
       @game.start_withdrawal if pos_button == 1
       @game.sort_bag if pos_bag_sort
+      @game.call_help if pos_help
     elsif @game.view_status == :gameover or @game.view_status == :game_clear
       @game.initialize if pos_back_to_title
+      Sound[:click].play
+    elsif @game.view_status == :help
+      @game.call_help
     end
 
   end
@@ -109,6 +113,10 @@ class Controller
 
   def pos_bag_sort
     mcheck(540,330,600,390)
+  end
+
+  def pos_help
+    mcheck(540,400,600,460)
   end
 
   def pos_button

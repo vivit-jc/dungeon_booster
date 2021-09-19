@@ -21,12 +21,14 @@ def click_monster(num,com)
     d -= @e_weapon.pt if @e_weapon
     d = 0 if d < 0
     damage(d,card.name)
+    Sound[:fight].play
     add_log(card.name+"を倒した") if @hp > 0
     @dungeon.delete_at num
   elsif com == 1 #逃げる
     if rest_run <= 0
       add_log("これ以上逃げられない")
     else
+      Sound[:runaway].play
       add_log(card.name+"から逃げた")
       @run += 1
       @stock << card
@@ -44,6 +46,7 @@ def click_target_monster(num)
   if card.scroll? and card.select_target
     case(card.id)
     when 0 #火炎
+      Sound[:fire].play
       add_log("火炎の巻物を使った "+monster.name+"に5ダメージを与えた")
       monster.hp -= 5
       if monster.hp <= 0
@@ -64,6 +67,7 @@ def click_rune(num)
     add_log("この階にはまだモンスターがいる")
     return false
   end
+  Sound[:rune].play
   add_log("隠されたルーンを唱えた")
   add_log(card.name+"が発動した "+card.text)
   chant_rune(card.id)
@@ -75,6 +79,7 @@ def take_item(num)
     add_log("バッグがいっぱいだ")
     return 
   end
+  Sound[:take_item].play
   @bag.push @dungeon[num]
   @dungeon.delete_at num
 end
@@ -98,6 +103,7 @@ def click_bag(num,com)
       @e_shield = card 
     end
     calc_status
+    Sound[:equip].play
     add_log(card.name+"を装備した")
   elsif com == 0 #使う
     if card.treasure?
@@ -136,6 +142,7 @@ def calc_trap
       add_log(trap.name+"をうまく避けた")
       next
     else
+      Sound[:trap].play
       add_log(trap.name+"を踏んだ")
       calc_trap_d(trap.id)
     end
@@ -160,6 +167,7 @@ def go_to_next_floor(first_floor=false)
   if @deck.size == 0 and @withdraw
     @game_clear = true
     @view_status = :game_clear
+    Sound[:game_clear].play
     if @completed
      add_log("あなたはダンジョンを踏破し、無事生還した！")
     else
@@ -188,6 +196,7 @@ def go_to_next_floor(first_floor=false)
     end
     #罠を先頭に持ってくる
     @dungeon = @dungeon.select{|c|c.trap?}+@dungeon.select{|c|!c.trap?}
+    Sound[:stairs].play
     calc_trap
     if @deck.size == 0 and !@withdraw
       add_log("この層の最深部に到達した") 
@@ -206,6 +215,7 @@ def start_withdrawal
   @dungeon = []
   @deck = @stock
   @stock = []
+  Sound[:click].play
   (@dungeon_max-@deck.size-5).times do
     @deck << Card.new(:blank,0)
   end
@@ -220,6 +230,7 @@ def refresh_status
 end
 
 def sort_bag
+  Sound[:sort].play
   @bag.sort!{|a, b| b.kind <=> a.kind } 
   @bag = @bag.select{|c|!c.treasure?}+@bag.select{|c|c.treasure?}
 end
@@ -227,6 +238,20 @@ end
 def cancel_target_select
   @using_item = nil
   @click_mode = nil
+end
+
+def call_help
+  Sound[:click].play
+  case(@help_page)
+  when nil
+    @view_status = :help
+    @help_page = 0
+  when 0
+    @help_page = 1
+  when 1
+    @help_page = nil
+    @view_status = :main_view
+  end
 end
 
 end

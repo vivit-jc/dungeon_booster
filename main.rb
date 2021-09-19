@@ -45,7 +45,8 @@ Font50 = Font.new(50)
 Font60 = Font.new(60)
 Font100 = Font.new(100)
 
-IMAGES = [:weapon, :shield, :scroll, :potion, :trap, :rune, :treasure]
+IMAGES = [:weapon, :shield, :scroll, :potion, :trap, :rune, :treasure, :monster,:help1,:help2]
+SE = [:take_item, :equip, :fight, :fire, :potion, :runaway, :rune, :sort, :stairs, :trap, :game_clear, :gameover, :click]
 
 Window.height = 480
 Window.width = 640
@@ -54,6 +55,10 @@ Image.register(:title, "./img/title.jpg")
 
 IMAGES.each do |m|
   Image.register(m, "./img/"+m.to_s+".png")
+end
+
+SE.each do |se|
+  Sound.register(se, "./se/"+se.to_s+".wav")
 end
 
 Window.load_resources do
