@@ -56,8 +56,7 @@ def click_target_monster(num)
       end
     end
     @bag.delete_at @using_item[:pos]
-    @click_mode = nil
-    @using_item = nil
+    cancel_target_select
   end
 
 end
@@ -121,10 +120,6 @@ def click_bag(num,com)
         add_log("どれに対して使う？")
       end
     end
-  elsif com == 1 #捨てる
-    add_log(card.name+"を捨てた")
-    @stock << card
-    @bag.delete_at num  
   end
   
 end
@@ -240,6 +235,7 @@ end
 def cancel_target_select
   @using_item = nil
   @click_mode = nil
+  @select_mode = nil
 end
 
 def call_help
@@ -254,6 +250,22 @@ def call_help
     @help_page = nil
     @view_status = :main_view
   end
+end
+
+
+def dispose_item_select
+  @click_mode = :select_bag
+  @select_mode = :dispose
+  add_log("どれを捨てる？")
+end
+
+def dispose_item(num)
+  Sound[:take_item].play
+  card = @bag[num]
+  add_log(card.name+"を捨てた")
+  @stock << card
+  @bag.delete_at num
+  cancel_target_select
 end
 
 end

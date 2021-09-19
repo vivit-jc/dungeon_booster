@@ -34,12 +34,22 @@ class Controller
   end
 
   def click_on_game
+
+    #各項でreturnするのを忘れないこと！（１クリックで処理が２回行われてしまうため）
     case @game.click_mode
     when :select_monster
       if pos_dungeon and @game.dungeon[pos_dungeon].monster?
         @game.click_target_monster(pos_dungeon) 
       else
         @game.add_log(@game.using_item[:card].name+"を使うのをやめた")
+        @game.cancel_target_select
+      end
+      return
+    when :select_bag
+      if pos_bag and @game.select_mode == :dispose
+        @game.dispose_item(pos_bag)
+      else
+        @game.add_log("アイテムを捨てるのをやめた")
         @game.cancel_target_select
       end
       return
@@ -51,6 +61,7 @@ class Controller
       @game.go_to_next_floor if pos_button == 0
       @game.start_withdrawal if pos_button == 1
       @game.sort_bag if pos_bag_sort
+      @game.dispose_item_select if pos_dispose_item
       @game.call_help if pos_help
     elsif @game.view_status == :gameover or @game.view_status == :game_clear
       @game.initialize if pos_back_to_title
@@ -84,7 +95,7 @@ class Controller
 
     3.times do |i|
       x = 20+120*pd
-      y = 50+20*i
+      y = 55+25*i
       return i if mcheck(x,y,x+60,y+20)
     end
     return false
@@ -112,11 +123,15 @@ class Controller
   end
 
   def pos_bag_sort
-    mcheck(540,330,600,390)
+    mcheck(540,330,600,360)
+  end
+
+  def pos_dispose_item
+    mcheck(540,370,600,400)
   end
 
   def pos_help
-    mcheck(540,400,600,460)
+    mcheck(540,400,600,440)
   end
 
   def pos_button

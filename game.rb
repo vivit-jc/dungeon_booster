@@ -9,7 +9,7 @@ include Item
 
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :hp, :max_hp, :log, :e_weapon, :e_shield,
-:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_item, :help_page
+:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_item, :help_page, :select_mode
 
 
   def initialize
@@ -19,6 +19,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @game_status_memo = nil
     @place = nil
     @click_mode = nil
+    @select_mode = nil
     @view_status = :main_view
     @deck = []
     @dungeon = []

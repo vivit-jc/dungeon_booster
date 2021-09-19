@@ -16,7 +16,13 @@ class View
     @infoback.box_fill(0,0,200,200,DARKGRAY)
 
     @itemback = Image.new(60,60)
-    @itemback.box_fill(0,0,60,60,DARKGRAY)    
+    @itemback.box_fill(0,0,60,60,DARKGRAY)
+
+    @itemback2 = Image.new(60,60)
+    @itemback2.box_fill(0,0,60,60,DARKGRAY2)
+
+    @itembuttonback = Image.new(60,30)
+    @itembuttonback.box_fill(0,0,60,30,DARKGRAY)
 
     @buttonback = Image.new(100,30)
     @buttonback.box_fill(0,0,100,30,DARKGRAY)
@@ -112,8 +118,9 @@ class View
       Window.draw_font(20,150,card.text,Font14)
     end
 
-    pdc = @controller.pos_dungeon_command
     return if @game.monster_exist_front?(num)
+    return if @game.click_mode
+    pdc = @controller.pos_dungeon_command
     if card.monster?
       Window.draw_font(x+3,55,"戦う",Font16,mouseover_color(pdc == 0))
       Window.draw_font(x+3,80,"逃げる",Font16,mouseover_color(pdc == 1))
@@ -130,11 +137,15 @@ class View
       card = bag[i]
       x = 260+70*(i%5)
       y = 260+(i/5).floor*70
-      Window.draw(x,y,@itemback)
       pos = @controller.pos_bag == i
-      if pos and !@game.click_mode
+      if pos
+        Window.draw(x,y,@game.click_mode == :select_bag ? @itemback2 : @itemback)
         Window.draw_font(260,400,card.name,Font14)
         Window.draw_font(260,420,card.text,Font14)
+      else
+        Window.draw(x,y,@itemback)
+      end
+      if pos && !@game.click_mode
         pbc = @controller.pos_bag_command
         if card.equip? and (@game.e_weapon == card or @game.e_shield == card)
           str = "外す" 
@@ -146,16 +157,19 @@ class View
           str = "使う"
         end
         Window.draw_font(x+3,y+3,str,Font16,mouseover_color(pbc == 0))
-        Window.draw_font(x+3,y+23,"捨てる",Font16,mouseover_color(pbc == 1))
       else
         Window.draw_scale(x-98,y-98,Image[card.kind],0.2,0.2) #マウスが乗っていない時にアイコンを表示
         Window.draw_font(x,y,"E",Font16) if bag[i] == @game.e_weapon or bag[i] == @game.e_shield
       end
     end
-    Window.draw(540,330,@itemback)
-    Window.draw_font(552,350,"整理",Font16,mouseover_color(@controller.pos_bag_sort))
-    Window.draw(540,400,@itemback)
-    Window.draw_font(547,420,"ヘルプ",Font16,mouseover_color(@controller.pos_help))
+    
+    # アイテム横のボタン
+    3.times do |i|
+      Window.draw(540,330+40*i,@itembuttonback)
+    end
+    Window.draw_font(545,337,"整理",Font16,mouseover_color((@controller.pos_bag_sort && !@game.click_mode)))
+    Window.draw_font(545,377,"捨てる",Font16,mouseover_color(@controller.pos_dispose_item && !@game.click_mode))
+    Window.draw_font(545,417,"ヘルプ",Font16,mouseover_color(@controller.pos_help && !@game.click_mode))
     
   end
 
@@ -165,19 +179,20 @@ class View
     Window.draw_font(520,130,str,Font20)
 
     Window.draw(500,160,@buttonback)
+    button_green = (@controller.pos_button == 0 && !@game.click_mode)
     if @game.deck.size == 0 and @game.withdraw
-      Window.draw_font(510,165,"帰還する",Font20,mouseover_color(@controller.pos_button == 0))
+      Window.draw_font(510,165,"帰還する",Font20,mouseover_color(button_green))
     elsif @game.deck.size == 0
       Window.draw_font(510,165,"次の階へ",Font20,{color: BLACK})
     else
-      Window.draw_font(510,165,"次の階へ",Font20,mouseover_color(@controller.pos_button == 0))
+      Window.draw_font(510,165,"次の階へ",Font20,mouseover_color(button_green))
     end
 
     Window.draw(500,200,@buttonback)
     if @game.withdraw or @game.deck.size+5 >= @game.dungeon_max
       color = {color: BLACK}
     else
-      color = mouseover_color(@controller.pos_button == 1)
+      color = mouseover_color(@controller.pos_button == 1 && !@game.click_mode)
     end
     Window.draw_font(510,205,"撤退開始",Font20,color)
   end
