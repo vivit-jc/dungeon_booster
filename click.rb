@@ -30,6 +30,7 @@ def click_monster(num,com)
     else
       Sound[:runaway].play
       add_log(card.name+"から逃げた")
+      add_log("ルーンを見失った") if @dungeon.find{|c|c.rune?}
       @run += 1
       @stock << card
       @dungeon.delete_at num
@@ -207,6 +208,7 @@ end
 
 def start_withdrawal
   return false if @deck.size+5 >= @dungeon_max
+  return false if @withdraw
   if monster_exist?
     add_log("この階にはまだモンスターがいる")
     return false

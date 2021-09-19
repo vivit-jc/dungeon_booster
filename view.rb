@@ -115,12 +115,12 @@ class View
     pdc = @controller.pos_dungeon_command
     return if @game.monster_exist_front?(num)
     if card.monster?
-      Window.draw_font(x+3,50,"戦う",Font16,mouseover_color(pdc == 0))
-      Window.draw_font(x+3,70,"逃げる",Font16,mouseover_color(pdc == 1))
+      Window.draw_font(x+3,55,"戦う",Font16,mouseover_color(pdc == 0))
+      Window.draw_font(x+3,80,"逃げる",Font16,mouseover_color(pdc == 1))
     elsif card.rune?
-      Window.draw_font(x+3,50,"唱える",Font16,mouseover_color(pdc == 0))          
+      Window.draw_font(x+3,55,"唱える",Font16,mouseover_color(pdc == 0))          
     elsif card.item?
-      Window.draw_font(x+3,50,"拾う",Font16,mouseover_color(pdc == 0))
+      Window.draw_font(x+3,55,"拾う",Font16,mouseover_color(pdc == 0))
     end
   end
 
@@ -179,7 +179,7 @@ class View
     else
       color = mouseover_color(@controller.pos_button == 1)
     end
-    Window.draw_font(510,205,"撤退する",Font20,color)
+    Window.draw_font(510,205,"撤退開始",Font20,color)
   end
 
   def draw_info
