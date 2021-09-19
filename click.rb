@@ -42,7 +42,6 @@ def click_target_monster(num)
   monster = @dungeon[num]
   #対象を選ぶタイプの巻物の処理
   if card.scroll? and card.select_target
-    p "あやしい"
     case(card.id)
     when 0 #火炎
       add_log("火炎の巻物を使った "+monster.name+"に5ダメージを与えた")
@@ -52,7 +51,7 @@ def click_target_monster(num)
         dungeon.delete_at num
       end
     end
-    p "ここまで？"
+    @bag.delete_at @using_item[:pos]
     @click_mode = nil
     @using_item = nil
   end
@@ -111,7 +110,7 @@ def click_bag(num,com)
       end
       if card.scroll? and card.select_target
         @click_mode = :select_monster
-        @using_item = {card: card, target: nil}
+        @using_item = {card: card, target: nil, pos: num}
         add_log("どれに対して使う？")
       end
     end

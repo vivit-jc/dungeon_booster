@@ -58,8 +58,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
   def init_deck
     temp_deck = [[:monster,0],[:monster,0],[:monster,0],[:monster,0],[:monster,0],
     [:monster,1],[:monster,1],[:monster,1],[:monster,2],[:monster,3],
-    [:scroll,0],[:scroll,0],[:scroll,0],[:scroll,0],[:scroll,0],[:scroll,0],
-    #[:scroll,0],[:weapon,0],[:shield,0],[:potion,0],[:potion,0],[:potion,0],
+    [:scroll,0],[:weapon,0],[:shield,0],[:potion,0],[:potion,0],[:potion,0],
     [:treasure,0],[:trap,0],[:trap,1]]
     temp_deck << [:rune,rand(2)]
     temp_deck.each_with_index do |e,i|

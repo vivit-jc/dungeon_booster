@@ -80,7 +80,7 @@ class Controller
 
     3.times do |i|
       x = 20+120*pd
-      y = 30+20*i
+      y = 50+20*i
       return i if mcheck(x,y,x+60,y+20)
     end
     return false
