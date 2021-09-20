@@ -7,6 +7,7 @@ module Viewmisc
   end
 
   def draw_game_clear
+    Window.draw_font(400,60,"score: "+@game.score.to_s,Font20)
     [@game.log.size,10].min.times do |i|
       Window.draw_font(30,130+18*i,@game.log[@game.log.size-1-i],Font14)
     end

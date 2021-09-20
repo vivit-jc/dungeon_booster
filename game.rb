@@ -13,7 +13,7 @@ include Misc
 
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :atk, :hp, :max_hp, :log, :e_weapon, :e_shield,
-:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_card, :help_page, :select_mode, :cardset
+:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_card, :help_page, :select_mode, :cardset, :score
 
 
   def initialize
@@ -49,6 +49,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @game_clear = false
     @gameover = false
     @completed = false
+    @score = 0
 
     @log = []
     @help_page = nil
@@ -67,20 +68,17 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
   end
 
   def init_deck
-#    temp_deck = [[:monster,0],[:monster,0],[:monster,0],[:monster,0],[:monster,0],
-#    [:monster,1],[:monster,1],[:monster,1],[:monster,2],[:monster,3],
-#    [:scroll,0],[:weapon,0],[:shield,0],[:potion,0],[:potion,0],[:potion,0],
-#    [:treasure,0],[:trap,0],[:trap,1]]
-    temp_deck = [[:monster,0],[:monster,0],[:monster,0],[:scroll,2],[:trap,0],
-    [:scroll,1],[:treasure,0],[:potion,1],[:monster,0],[:monster,0],
-    [:potion,0],[:treasure,0],[:scroll,1],[:scroll,1],[:monster,0],
-    [:potion,0],[:treasure,0],[:monster,0],[:monster,0]
-  ]
 
-    temp_deck << [:rune,rand(2)]
-    temp_deck.each_with_index do |e,i|
-      @deck.push Card.new(e[0],e[1])
-    end
+    @deck = []
+    @deck << make_card_at_random(:rune,1)
+    @deck << make_card_at_random(:weapon,1)
+    @deck << make_card_at_random(:shield,1)
+    2.times{@deck << make_card_at_random(:monster,2)}
+    7.times{@deck << make_card_at_random(:monster,1)}
+    3.times{@deck << make_card_at_random(:door,1)}
+    3.times{@deck << make_card_at_random(:trap,1)}
+    7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
+
     @dungeon_max = @deck.size
     @deck.shuffle!
     go_to_next_floor(true)

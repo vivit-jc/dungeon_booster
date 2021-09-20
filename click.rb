@@ -185,6 +185,7 @@ def go_to_next_floor(first_floor=false)
     else
      add_log("あなたはダンジョンから無事脱出した！")
     end
+    @bag.select{|c|c.treasure?}.each{|e|@score += e.pt}
     return false
   end
   return false if @deck.size == 0
