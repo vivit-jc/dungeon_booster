@@ -226,13 +226,13 @@ def start_withdrawal
     return false
   end
   @withdraw = true
+  Sound[:click].play
+  (@dungeon_max-@deck.size-@stock.size-5).times do
+    @stock << Card.new(:blank,0)
+  end
   @dungeon = []
   @deck = @stock
   @stock = []
-  Sound[:click].play
-  (@dungeon_max-@deck.size-5).times do
-    @deck << Card.new(:blank,0)
-  end
   @deck.shuffle!
   go_to_next_floor
 end
