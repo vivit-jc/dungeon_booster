@@ -42,6 +42,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @run = 0
     @run_max = 2
     @run_max_floor = nil
+    @escape_trap = 0
     @using_card = nil
 
     @withdraw = false
@@ -70,8 +71,11 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
 #    [:monster,1],[:monster,1],[:monster,1],[:monster,2],[:monster,3],
 #    [:scroll,0],[:weapon,0],[:shield,0],[:potion,0],[:potion,0],[:potion,0],
 #    [:treasure,0],[:trap,0],[:trap,1]]
-    temp_deck = [[:door,0],[:weapon,0],[:shield,0],[:potion,0],[:potion,0],
-    [:potion,0],[:treasure,0],[:door,0],[:monster,2],[:monster,4]]
+    temp_deck = [[:monster,0],[:monster,0],[:monster,0],[:scroll,2],[:trap,0],
+    [:scroll,1],[:treasure,0],[:potion,1],[:monster,0],[:monster,0],
+    [:potion,0],[:treasure,0],[:scroll,1],[:scroll,1],[:monster,0],
+    [:potion,0],[:treasure,0],[:monster,0],[:monster,0]
+  ]
 
     temp_deck << [:rune,rand(2)]
     temp_deck.each_with_index do |e,i|

@@ -17,7 +17,7 @@
 	],
 	"potion":[
 		{"id":0,"name":"回復薬","text":"HPを全回復する。","tier":1},
-		{"id":1,"name":"体力増強薬","text":"最大HP+3。","tier":2}
+		{"id":1,"name":"体力増強薬","text":"最大HP+2。","tier":2}
 	],
 	"scroll":[
 		{"id":0,"name":"火炎の巻物","text":"敵1体に5ダメージ。","select_target":true,"tier":1},

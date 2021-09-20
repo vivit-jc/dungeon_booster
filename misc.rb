@@ -14,6 +14,7 @@ end
 def calc_status
   @atk = @atk_buff
   @atk += @bag[@e_weapon].pt if @e_weapon
+  @atk = 0 if @atk < 0
   @max_hp = @base_hp + @hp_buff
   @max_hp += @bag[@e_shield].pt if @e_shield
   @hp = @max_hp if @max_hp <= @hp
@@ -44,11 +45,9 @@ def call_help
 end
 
 def delete_item(num)
-  p "deko"
   @e_weapon -= 1 if @e_weapon && num < @e_weapon
   @e_shield -= 1 if @e_shield && num < @e_shield
   @bag.delete_at num
-  p "doko"
 end
 
 def make_card_at_random(kind,tier)

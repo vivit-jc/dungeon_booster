@@ -105,7 +105,6 @@ def click_bag(num,com)
     calc_status
     add_log(card.name+"を外した")
   elsif card.equip? and com == 0 #装備
-    p "card.equip"
     if card.weapon?
       @e_weapon = num
     elsif card.shield?
@@ -127,6 +126,9 @@ def click_bag(num,com)
         @click_mode = :select_monster
         @using_card = {card: card, target: nil, pos: num}
         add_log("どれに対して使う？")
+      elsif card.scroll?
+        use_scroll(card.id)
+        delete_item(num)
       end
     end
   end
@@ -134,7 +136,7 @@ end
 
 def calc_trap
   @dungeon.select{|c|c.trap?}.each do |trap|
-    if rand(4) == 0
+    if rand(4) <= @escape_trap
       add_log(trap.name+"をうまく避けた")
       next
     else
@@ -151,6 +153,21 @@ def calc_trap_d(id)
     @run_max_floor = 0
   when 1 #矢の罠
     damage(2,"矢の罠")
+  when 2 #召喚スイッチ
+    size = @dungeon.select{|c|!c.trap?}.size
+    @deck += @dungeon.select{|c|!c.trap?}
+    size.times do 
+      @dungeon.pop
+    end
+    @deck = @deck.select{|c|c.monster?}+@deck.select{|c|!c.monster?}
+    size.times do 
+      @dungeon << @deck.shift
+    end
+    @deck.shuffle!
+  when 3 #毒矢の罠
+    damage(2,"毒矢の罠")
+    @hp_buff -= 2
+    calc_status
   end
 end
 
