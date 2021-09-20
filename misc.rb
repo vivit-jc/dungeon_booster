@@ -39,4 +39,8 @@ def call_help
   end
 end
 
+def make_card_at_random(kind,tier)
+  Card.new(kind,CARDDATA[kind].select{|c|c.tier == tier}.sample.id)
+end
+
 end

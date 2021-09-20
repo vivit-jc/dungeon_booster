@@ -142,7 +142,7 @@ class View
       Window.draw(170,80+120*i,Image[:cardset_frame]) if @controller.pos_cardset == i
       cards.each_with_index do |c,j|
         Window.draw_scale(195+100*j-57,50+120*i-57,Image[c.kind],0.2,0.2)
-        Window.draw_font(255+100*j,150+120*i,"☆1",Font14)
+        Window.draw_font(255+100*j,150+120*i,"☆"+c.tier.to_s,Font14)
       end
     end
   end
