@@ -16,7 +16,7 @@ module Viewbag
       end
       if pos && !@game.click_mode
         pbc = @controller.pos_bag_command
-        if card.equip? and (@game.e_weapon == card or @game.e_shield == card)
+        if card.equip? and (@game.e_weapon == i || @game.e_shield == i)
           str = "外す" 
         elsif card.equip?
           str = "装備" 
@@ -28,7 +28,7 @@ module Viewbag
         Window.draw_font(x+3,y+3,str,Font16,mouseover_color(pbc == 0))
       else
         Window.draw_scale(x-98,y-98,Image[card.kind],0.2,0.2) #マウスが乗っていない時にアイコンを表示
-        Window.draw_font(x,y,"E",Font16) if bag[i] == @game.e_weapon or bag[i] == @game.e_shield
+        Window.draw_font(x,y,"E",Font16) if @game.e_weapon == i || @game.e_shield == i
       end
     end
     

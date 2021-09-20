@@ -126,8 +126,7 @@ class View
     Window.draw(20,260,@infoback)
     Window.draw(30,274,@hp_gage)
 
-    atk = @game.e_weapon ? @game.e_weapon.pt : 0
-    Window.draw_font(30,300,"HP #{@game.hp} / #{@game.max_hp}  ATK #{atk}",Font14)
+    Window.draw_font(30,300,"HP #{@game.hp} / #{@game.max_hp}  ATK #{@game.atk}",Font14)
     Window.draw_font(30,320,"逃げる 残り#{@game.rest_run}回",Font14)
     Window.draw_font(30,340,"残り #{@game.deck.size} 枚",Font14)
     Window.draw_font(30,360,"捨札 #{@game.stock.size} 枚",Font14)

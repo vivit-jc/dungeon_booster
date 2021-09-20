@@ -12,17 +12,21 @@ def refresh_status
 end
 
 def calc_status
-  @att = @att_buff
-  @att += @e_weapon.pt if @e_weapon
+  @atk = @atk_buff
+  @atk += @bag[@e_weapon].pt if @e_weapon
   @max_hp = @base_hp + @hp_buff
-  @max_hp += @e_shield.pt if @e_shield
+  @max_hp += @bag[@e_shield].pt if @e_shield
   @hp = @max_hp if @max_hp <= @hp
 end
 
 def sort_bag
   Sound[:sort].play
+  ew = @e_weapon ? @bag[@e_weapon].id : nil
+  es = @e_shield ? @bag[@e_shield].id : nil
   @bag.sort!{|a, b| b.kind <=> a.kind } 
   @bag = @bag.select{|c|!c.treasure?}+@bag.select{|c|c.treasure?}
+  @e_weapon = @bag.size.times.select{|i|@bag[i].weapon? && @bag[i].id == ew}[0] if ew
+  @e_shield = @bag.size.times.select{|i|@bag[i].shield? && @bag[i].id == es}[0] if es
 end
 
 def call_help
@@ -37,6 +41,14 @@ def call_help
     @help_page = nil
     @view_status = :main_view
   end
+end
+
+def delete_item(num)
+  p "deko"
+  @e_weapon -= 1 if @e_weapon && num < @e_weapon
+  @e_shield -= 1 if @e_shield && num < @e_shield
+  @bag.delete_at num
+  p "doko"
 end
 
 def make_card_at_random(kind,tier)

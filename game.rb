@@ -1,16 +1,18 @@
 require_remote './card.rb'
 require_remote './click.rb'
 require_remote './item.rb'
+require_remote './monster.rb'
 require_remote './misc.rb'
 
 class Game
 
 include Click
 include Item
+include Monster
 include Misc
 
 attr_accessor :status, :page, :view_status
-attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :hp, :max_hp, :log, :e_weapon, :e_shield,
+attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :atk, :hp, :max_hp, :log, :e_weapon, :e_shield,
 :run, :run_max, :withdraw, :gameover, :dungeon_max, :using_card, :help_page, :select_mode, :cardset
 
 
@@ -34,7 +36,8 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @base_hp = 10
     @e_weapon = nil
     @e_shield = nil
-    @att_buff = 0
+    @atk = 0
+    @atk_buff = 0
     @hp_buff = 0
     @run = 0
     @run_max = 2
@@ -68,7 +71,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
 #    [:scroll,0],[:weapon,0],[:shield,0],[:potion,0],[:potion,0],[:potion,0],
 #    [:treasure,0],[:trap,0],[:trap,1]]
     temp_deck = [[:door,0],[:weapon,0],[:shield,0],[:potion,0],[:potion,0],
-    [:potion,0],[:treasure,0],[:door,0],[:door,0],[:door,0]]
+    [:potion,0],[:treasure,0],[:door,0],[:monster,2],[:monster,4]]
 
     temp_deck << [:rune,rand(2)]
     temp_deck.each_with_index do |e,i|

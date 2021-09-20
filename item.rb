@@ -34,7 +34,7 @@ def dispose_item(num)
   card = @bag[num]
   add_log(card.name+"を捨てた")
   @stock << card
-  @bag.delete_at num
+  delete_item(num)
   cancel_target_select
 end
 

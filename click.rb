@@ -20,11 +20,12 @@ def click_monster(num,com)
   card = @dungeon[num]
   if com == 0 #戦う
     d = card.hp
-    d -= @e_weapon.pt if @e_weapon
+    d -= @atk
     d = 0 if d < 0
     damage(d,card.name)
     Sound[:fight].play
     add_log(card.name+"を倒した") if @hp > 0
+    calc_monster(num,com)
     @dungeon.delete_at num
   elsif com == 1 #逃げる
     if rest_run <= 0
@@ -57,10 +58,9 @@ def click_target_monster(num)
         dungeon.delete_at num
       end
     end
-    @bag.delete_at @using_card[:pos]
+    delete_item(@using_card[:pos])
     cancel_target_select
   end
-
 end
 
 def click_rune(num)
@@ -96,19 +96,20 @@ def click_bag(num,com)
   card = @bag[num]
 
   #装備をはずす
-  if card.equip? and com == 0 and (@e_weapon == card or @e_shield == card) 
-    if card.kind == :weapon
+  if card.equip? && com == 0 && (@e_weapon == num || @e_shield == num) 
+    if card.weapon?
       @e_weapon = nil
-    elsif card.kind == :shield
+    elsif card.shield?
       @e_shield = nil 
     end
     calc_status
     add_log(card.name+"を外した")
   elsif card.equip? and com == 0 #装備
-    if card.kind == :weapon
-      @e_weapon = card 
-    elsif card.kind == :shield
-      @e_shield = card 
+    p "card.equip"
+    if card.weapon?
+      @e_weapon = num
+    elsif card.shield?
+      @e_shield = num
     end
     calc_status
     Sound[:equip].play
@@ -120,7 +121,7 @@ def click_bag(num,com)
     else
       if card.potion?
         use_potion(card.id)
-        @bag.delete_at num
+        delete_item(num)
       end
       if card.scroll? and card.select_target
         @click_mode = :select_monster

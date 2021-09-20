@@ -1,7 +1,7 @@
 class Card
 
 attr_accessor :hp
-attr_reader :num, :kind, :name, :text, :att, :pt, :id, :select_target, :tier
+attr_reader :num, :kind, :name, :text, :pt, :id, :select_target, :tier
   def initialize(kind, num)
     card = CARDDATA[kind][num]
   	@kind = kind
@@ -16,7 +16,7 @@ attr_reader :num, :kind, :name, :text, :att, :pt, :id, :select_target, :tier
   end
 
   def self.define_kind
-    [:monster, :potion, :scroll, :rune, :trap, :treasure, :door, :blank].each do |e|
+    [:weapon, :shield, :monster, :potion, :scroll, :rune, :trap, :treasure, :door, :blank].each do |e|
       define_method(e.to_s+"?") do
         @kind == e
       end
