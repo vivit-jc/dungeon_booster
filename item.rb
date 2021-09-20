@@ -25,7 +25,7 @@ def use_scroll(id)
     Sound[:fire].play
     add_log("稲妻の巻物を使った ")
     @dungeon.select{|c|c.monster?}.each do |monster|
-      monster.hp -= 5
+      monster.hp -= 2
       if monster.hp <= 0
         add_log(monster.name+"を倒した")
       end

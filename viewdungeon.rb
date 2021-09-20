@@ -35,9 +35,12 @@ module Viewdungeon
     x = 20+120*num
 
     #マウスオーバー時に説明を表示
-    if card.kind == :rune
+    if card.rune?
       Window.draw_font(20,130,"隠されたルーン",Font14)
       Window.draw_font(20,150,"唱えると、ルーンの魔法を発動する",Font14)
+    elsif card.monster?
+      Window.draw_font(20,130,card.name,Font14)
+      Window.draw_font(20,150,"ATK "+card.hp.to_s+"   "+card.text,Font14)      
     else
       Window.draw_font(20,130,card.name,Font14)
       Window.draw_font(20,150,card.text,Font14)
