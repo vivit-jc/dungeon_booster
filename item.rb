@@ -23,4 +23,19 @@ def chant_rune(id)
   end
 end
 
+def dispose_item_select
+  @click_mode = :select_bag
+  @select_mode = :dispose
+  add_log("どれを捨てる？")
+end
+
+def dispose_item(num)
+  Sound[:take_item].play
+  card = @bag[num]
+  add_log(card.name+"を捨てた")
+  @stock << card
+  @bag.delete_at num
+  cancel_target_select
+end
+
 end

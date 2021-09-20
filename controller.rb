@@ -41,7 +41,7 @@ class Controller
       if pos_dungeon and @game.dungeon[pos_dungeon].monster?
         @game.click_target_monster(pos_dungeon) 
       else
-        @game.add_log(@game.using_item[:card].name+"を使うのをやめた")
+        @game.add_log(@game.using_card[:card].name+"を使うのをやめた")
         @game.cancel_target_select
       end
       return

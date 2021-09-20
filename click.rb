@@ -11,6 +11,8 @@ def click_dungeon(num,com)
     click_monster(num, com)
   elsif card.rune?
     click_rune(num)
+  elsif card.door?
+    click_door(num)
   end
 end
 
@@ -41,7 +43,7 @@ end
 
 def click_target_monster(num)
   return false unless @dungeon[num].monster?
-  card = @using_item[:card]
+  card = @using_card[:card]
   monster = @dungeon[num]
   #対象を選ぶタイプの巻物の処理
   if card.scroll? and card.select_target
@@ -55,7 +57,7 @@ def click_target_monster(num)
         dungeon.delete_at num
       end
     end
-    @bag.delete_at @using_item[:pos]
+    @bag.delete_at @using_card[:pos]
     cancel_target_select
   end
 
@@ -72,6 +74,12 @@ def click_rune(num)
   add_log(card.name+"が発動した "+card.text)
   chant_rune(card.id)
   @dungeon.delete_at num
+end
+
+def click_door(num)
+  #@view_status = :select_cardset
+  @using_card = {card: @dungeon[num], target: nil, pos: num}
+  @cardset = make_cardset
 end
 
 def take_item(num)
@@ -116,20 +124,11 @@ def click_bag(num,com)
       end
       if card.scroll? and card.select_target
         @click_mode = :select_monster
-        @using_item = {card: card, target: nil, pos: num}
+        @using_card = {card: card, target: nil, pos: num}
         add_log("どれに対して使う？")
       end
     end
   end
-  
-end
-
-def calc_status
-  @att = @att_buff
-  @att += @e_weapon.pt if @e_weapon
-  @max_hp = @base_hp + @hp_buff
-  @max_hp += @e_shield.pt if @e_shield
-  @hp = @max_hp if @max_hp <= @hp
 end
 
 def calc_trap
@@ -152,7 +151,6 @@ def calc_trap_d(id)
   when 1 #矢の罠
     damage(2,"矢の罠")
   end
-
 end
 
 def go_to_next_floor(first_floor=false)
@@ -218,54 +216,15 @@ def start_withdrawal
   end
   @deck.shuffle!
   go_to_next_floor
-
 end
 
-def refresh_status
-  @run_max_floor = nil
-  @run = 0
-end
-
-def sort_bag
-  Sound[:sort].play
-  @bag.sort!{|a, b| b.kind <=> a.kind } 
-  @bag = @bag.select{|c|!c.treasure?}+@bag.select{|c|c.treasure?}
-end
-
-def cancel_target_select
-  @using_item = nil
-  @click_mode = nil
-  @select_mode = nil
-end
-
-def call_help
-  Sound[:click].play
-  case(@help_page)
-  when nil
-    @view_status = :help
-    @help_page = 0
-  when 0
-    @help_page = 1
-  when 1
-    @help_page = nil
-    @view_status = :main_view
+def make_cardset
+  c = []
+  9.times do
+    kind = [:monster,:rune,:weapon,:shield,:potion,:scroll,:treasure,:trap].sample
+    temp_cardset << Card.new(kind,0)
   end
-end
-
-
-def dispose_item_select
-  @click_mode = :select_bag
-  @select_mode = :dispose
-  add_log("どれを捨てる？")
-end
-
-def dispose_item(num)
-  Sound[:take_item].play
-  card = @bag[num]
-  add_log(card.name+"を捨てた")
-  @stock << card
-  @bag.delete_at num
-  cancel_target_select
+  return [[c[0],c[1],c[2]],[c[3],c[4],c[5]],[c[6],c[7],c[8]]]
 end
 
 end
