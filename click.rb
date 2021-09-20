@@ -11,6 +11,8 @@ def click_dungeon(num,com)
     click_monster(num, com)
   elsif card.rune?
     click_rune(num)
+  elsif card.door?
+    click_door(num)
   end
 end
 
@@ -18,11 +20,12 @@ def click_monster(num,com)
   card = @dungeon[num]
   if com == 0 #戦う
     d = card.hp
-    d -= @e_weapon.pt if @e_weapon
+    d -= @atk
     d = 0 if d < 0
     damage(d,card.name)
     Sound[:fight].play
     add_log(card.name+"を倒した") if @hp > 0
+    calc_monster(num,com)
     @dungeon.delete_at num
   elsif com == 1 #逃げる
     if rest_run <= 0
@@ -41,7 +44,7 @@ end
 
 def click_target_monster(num)
   return false unless @dungeon[num].monster?
-  card = @using_item[:card]
+  card = @using_card[:card]
   monster = @dungeon[num]
   #対象を選ぶタイプの巻物の処理
   if card.scroll? and card.select_target
@@ -55,10 +58,9 @@ def click_target_monster(num)
         dungeon.delete_at num
       end
     end
-    @bag.delete_at @using_item[:pos]
+    delete_item(@using_card[:pos])
     cancel_target_select
   end
-
 end
 
 def click_rune(num)
@@ -72,6 +74,12 @@ def click_rune(num)
   add_log(card.name+"が発動した "+card.text)
   chant_rune(card.id)
   @dungeon.delete_at num
+end
+
+def click_door(num)
+  @view_status = :select_cardset
+  @using_card = {card: @dungeon[num], target: nil, pos: num}
+  @cardset = make_cardset
 end
 
 def take_item(num)
@@ -88,19 +96,19 @@ def click_bag(num,com)
   card = @bag[num]
 
   #装備をはずす
-  if card.equip? and com == 0 and (@e_weapon == card or @e_shield == card) 
-    if card.kind == :weapon
+  if card.equip? && com == 0 && (@e_weapon == num || @e_shield == num) 
+    if card.weapon?
       @e_weapon = nil
-    elsif card.kind == :shield
+    elsif card.shield?
       @e_shield = nil 
     end
     calc_status
     add_log(card.name+"を外した")
   elsif card.equip? and com == 0 #装備
-    if card.kind == :weapon
-      @e_weapon = card 
-    elsif card.kind == :shield
-      @e_shield = card 
+    if card.weapon?
+      @e_weapon = num
+    elsif card.shield?
+      @e_shield = num
     end
     calc_status
     Sound[:equip].play
@@ -112,29 +120,23 @@ def click_bag(num,com)
     else
       if card.potion?
         use_potion(card.id)
-        @bag.delete_at num
+        delete_item(num)
       end
       if card.scroll? and card.select_target
         @click_mode = :select_monster
-        @using_item = {card: card, target: nil, pos: num}
+        @using_card = {card: card, target: nil, pos: num}
         add_log("どれに対して使う？")
+      elsif card.scroll?
+        use_scroll(card.id)
+        delete_item(num)
       end
     end
   end
-  
-end
-
-def calc_status
-  @att = @att_buff
-  @att += @e_weapon.pt if @e_weapon
-  @max_hp = @base_hp + @hp_buff
-  @max_hp += @e_shield.pt if @e_shield
-  @hp = @max_hp if @max_hp <= @hp
 end
 
 def calc_trap
   @dungeon.select{|c|c.trap?}.each do |trap|
-    if rand(4) == 0
+    if rand(4) <= @escape_trap
       add_log(trap.name+"をうまく避けた")
       next
     else
@@ -151,8 +153,22 @@ def calc_trap_d(id)
     @run_max_floor = 0
   when 1 #矢の罠
     damage(2,"矢の罠")
+  when 2 #召喚スイッチ
+    size = @dungeon.select{|c|!c.trap?}.size
+    @deck += @dungeon.select{|c|!c.trap?}
+    size.times do 
+      @dungeon.pop
+    end
+    @deck = @deck.select{|c|c.monster?}+@deck.select{|c|!c.monster?}
+    size.times do 
+      @dungeon << @deck.shift
+    end
+    @deck.shuffle!
+  when 3 #毒矢の罠
+    damage(2,"毒矢の罠")
+    @hp_buff -= 2
+    calc_status
   end
-
 end
 
 def go_to_next_floor(first_floor=false)
@@ -169,6 +185,7 @@ def go_to_next_floor(first_floor=false)
     else
      add_log("あなたはダンジョンから無事脱出した！")
     end
+    @bag.select{|c|c.treasure?}.each{|e|@score += e.pt}
     return false
   end
   return false if @deck.size == 0
@@ -194,7 +211,7 @@ def go_to_next_floor(first_floor=false)
     @dungeon = @dungeon.select{|c|c.trap?}+@dungeon.select{|c|!c.trap?}
     Sound[:stairs].play
     calc_trap
-    if @deck.size == 0 and !@withdraw
+    if @deck.size == 0 && !@withdraw && !@completed 
       add_log("この層の最深部に到達した") 
       @completed = true
     end
@@ -218,54 +235,49 @@ def start_withdrawal
   end
   @deck.shuffle!
   go_to_next_floor
-
 end
 
-def refresh_status
-  @run_max_floor = nil
-  @run = 0
+def open_door(num)
+  add_log("扉を開けた")
+  @deck += @cardset[num]
+  @deck.shuffle!
+  @dungeon_max += @cardset[num].size
+  @dungeon.delete_at @using_card[:pos]
+  Sound[:door].play
+  @cardset = []
+  @using_card = nil
+  @view_status = :main_view
 end
 
-def sort_bag
-  Sound[:sort].play
-  @bag.sort!{|a, b| b.kind <=> a.kind } 
-  @bag = @bag.select{|c|!c.treasure?}+@bag.select{|c|c.treasure?}
+def cancel_select_cardset
+  add_log("この扉は開けないことにした")
+  @dungeon.delete_at @using_card[:pos]
+  @using_card = nil
+  @view_status = :main_view
+  @cardset = []
 end
 
-def cancel_target_select
-  @using_item = nil
-  @click_mode = nil
-  @select_mode = nil
-end
-
-def call_help
-  Sound[:click].play
-  case(@help_page)
-  when nil
-    @view_status = :help
-    @help_page = 0
-  when 0
-    @help_page = 1
-  when 1
-    @help_page = nil
-    @view_status = :main_view
+def make_cardset
+  c = []
+  minus = [:monster,:trap]
+  plus = [:weapon,:shield,:potion,:scroll,:rune,:treasure]
+  3.times do
+    t = []
+    if rand(2) == 0
+      t << make_card_at_random(minus.sample,2)
+      2.times do
+        t << make_card_at_random(plus.sample,1)
+      end  
+    else
+      t << make_card_at_random(plus.sample,2)
+      2.times do
+        t << make_card_at_random(minus.sample,1)
+      end   
+    end
+    c << t
   end
-end
 
-
-def dispose_item_select
-  @click_mode = :select_bag
-  @select_mode = :dispose
-  add_log("どれを捨てる？")
-end
-
-def dispose_item(num)
-  Sound[:take_item].play
-  card = @bag[num]
-  add_log(card.name+"を捨てた")
-  @stock << card
-  @bag.delete_at num
-  cancel_target_select
+  return c
 end
 
 end

@@ -1,7 +1,7 @@
 class Card
 
 attr_accessor :hp
-attr_reader :num, :kind, :name, :text, :att, :pt, :id, :select_target, :tier
+attr_reader :num, :kind, :name, :text, :pt, :id, :select_target, :tier
   def initialize(kind, num)
     card = CARDDATA[kind][num]
   	@kind = kind
@@ -15,32 +15,12 @@ attr_reader :num, :kind, :name, :text, :att, :pt, :id, :select_target, :tier
     @tier = card.tier
   end
 
-  def monster?
-    return @kind == :monster
-  end
-
-  def potion?
-    return @kind == :potion
-  end
-
-  def scroll?
-    return @kind == :scroll
-  end
-
-  def rune?
-    return @kind == :rune
-  end
-
-  def trap?
-    return @kind == :trap
-  end
-
-  def treasure?
-    return @kind == :treasure
-  end
-
-  def blank?
-    return @kind == :blank
+  def self.define_kind
+    [:weapon, :shield, :monster, :potion, :scroll, :rune, :trap, :treasure, :door, :blank].each do |e|
+      define_method(e.to_s+"?") do
+        @kind == e
+      end
+    end
   end
 
   def item?
