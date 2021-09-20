@@ -77,7 +77,7 @@ def click_rune(num)
 end
 
 def click_door(num)
-  #@view_status = :select_cardset
+  @view_status = :select_cardset
   @using_card = {card: @dungeon[num], target: nil, pos: num}
   @cardset = make_cardset
 end
@@ -192,7 +192,7 @@ def go_to_next_floor(first_floor=false)
     @dungeon = @dungeon.select{|c|c.trap?}+@dungeon.select{|c|!c.trap?}
     Sound[:stairs].play
     calc_trap
-    if @deck.size == 0 and !@withdraw
+    if @deck.size == 0 && !@withdraw && !@completed 
       add_log("この層の最深部に到達した") 
       @completed = true
     end
@@ -218,11 +218,30 @@ def start_withdrawal
   go_to_next_floor
 end
 
+def open_door(num)
+  add_log("扉を開けた")
+  @deck += @cardset[num]
+  @dungeon_max += @cardset[num].size
+  @dungeon.delete_at @using_card[:pos]
+  Sound[:door].play
+  @cardset = []
+  @using_card = nil
+  @view_status = :main_view
+end
+
+def cancel_select_cardset
+  add_log("この扉は開けないことにした")
+  @dungeon.delete_at @using_card[:pos]
+  @using_card = nil
+  @view_status = :main_view
+  @cardset = []
+end
+
 def make_cardset
   c = []
   9.times do
     kind = [:monster,:rune,:weapon,:shield,:potion,:scroll,:treasure,:trap].sample
-    temp_cardset << Card.new(kind,0)
+    c << Card.new(kind,0)
   end
   return [[c[0],c[1],c[2]],[c[3],c[4],c[5]],[c[6],c[7],c[8]]]
 end

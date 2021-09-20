@@ -45,8 +45,8 @@ Font50 = Font.new(50)
 Font60 = Font.new(60)
 Font100 = Font.new(100)
 
-IMAGES = [:weapon, :shield, :scroll, :potion, :trap, :rune, :treasure, :monster, :help1, :help2, :door, :door2]
-SE = [:take_item, :equip, :fight, :fire, :potion, :runaway, :rune, :sort, :stairs, :trap, :game_clear, :gameover, :click]
+IMAGES = [:weapon, :shield, :scroll, :potion, :trap, :rune, :treasure, :monster, :help1, :help2, :door, :door2, :cardset_frame]
+SE = [:take_item, :equip, :fight, :fire, :potion, :runaway, :rune, :sort, :stairs, :trap, :game_clear, :gameover, :click, :door]
 
 Window.height = 480
 Window.width = 640

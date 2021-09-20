@@ -63,6 +63,9 @@ class Controller
       @game.sort_bag if pos_bag_sort
       @game.dispose_item_select if pos_dispose_item
       @game.call_help if pos_help
+    elsif @game.view_status == :select_cardset
+      @game.open_door(pos_cardset) if pos_cardset
+      @game.cancel_select_cardset if pos_cancel_select_cardset
     elsif @game.view_status == :gameover or @game.view_status == :game_clear
       @game.initialize if pos_back_to_title
       Sound[:click].play
@@ -120,6 +123,18 @@ class Controller
       return i if mcheck(x,y,x+60,y+20)
     end
     return false
+  end
+
+  def pos_cardset
+    3.times do |i|
+      y = 80 + 120*i
+      return i if mcheck(170,y,570,y+100)
+    end
+    return false
+  end
+
+  def pos_cancel_select_cardset
+    mcheck(60,360,120,380)
   end
 
   def pos_bag_sort

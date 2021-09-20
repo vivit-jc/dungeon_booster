@@ -35,6 +35,9 @@ class View
     @buttonback = Image.new(100,30)
     @buttonback.box_fill(0,0,100,30,DARKGRAY)
 
+    @cardsetback = Image.new(400,100)
+    @cardsetback.box(0,0,400,100,WHITE)
+
     @hp_gage = Image.new(180,16)
     @hp_gage.box_fill(0,0,180,16,GREEN)
     @hp_buffer = @game.hp
@@ -73,6 +76,8 @@ class View
       draw_log_view
     when :help
       draw_help
+    when :select_cardset
+      draw_select_cardset
     when :main_view
       @view_status_buff = :main_view
       draw_dungeon
@@ -99,7 +104,7 @@ class View
     end
 
     Window.draw(500,200,@buttonback)
-    if @game.withdraw or @game.deck.size+5 >= @game.dungeon_max
+    if @game.withdraw || @game.deck.size+5 >= @game.dungeon_max
       color = {color: BLACK}
     else
       color = mouseover_color(@controller.pos_button == 1 && !@game.click_mode)
@@ -127,6 +132,19 @@ class View
     Window.draw_font(30,340,"残り #{@game.deck.size} 枚",Font14)
     Window.draw_font(30,360,"捨札 #{@game.stock.size} 枚",Font14)
     
+  end
+
+  def draw_select_cardset
+    Window.draw_font(310,30,"どの扉を開ける？",Font16)
+    Window.draw_scale(-40,125,Image[:door2],0.3,0.3)
+    Window.draw_font(60,360,"やめる",Font20,mouseover_color(@controller.pos_cancel_select_cardset))
+    @game.cardset.each_with_index do |cards,i|
+      Window.draw(170,80+120*i,Image[:cardset_frame]) if @controller.pos_cardset == i
+      cards.each_with_index do |c,j|
+        Window.draw_scale(195+100*j-57,50+120*i-57,Image[c.kind],0.2,0.2)
+        Window.draw_font(255+100*j,150+120*i,"☆1",Font14)
+      end
+    end
   end
 
 end

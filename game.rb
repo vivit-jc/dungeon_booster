@@ -11,7 +11,7 @@ include Misc
 
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :hp, :max_hp, :log, :e_weapon, :e_shield,
-:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_card, :help_page, :select_mode
+:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_card, :help_page, :select_mode, :cardset
 
 
   def initialize
