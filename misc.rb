@@ -54,4 +54,8 @@ def make_card_at_random(kind,tier)
   Card.new(kind,CARDDATA[kind].select{|c|c.tier == tier}.sample.id)
 end
 
+def deck_shuffle
+  @deck = @deck.reject{|c|c.stairs?}.shuffle+@deck.select{|c|c.stairs?}
+end
+
 end

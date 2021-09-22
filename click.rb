@@ -14,7 +14,7 @@ def click_dungeon(num,com)
   elsif card.door?
     click_door(num)
   elsif card.stairs?
-    p "click_stairs"
+    click_stairs(num)
   end
 end
 
@@ -65,35 +65,6 @@ def click_target_monster(num)
   end
 end
 
-def click_rune(num)
-  card = @dungeon[num]
-  if monster_exist?
-    add_log("この階にはまだモンスターがいる")
-    return false
-  end
-  Sound[:rune].play
-  add_log("隠されたルーンを唱えた")
-  add_log(card.name+"が発動した "+card.text)
-  chant_rune(card.id)
-  @dungeon.delete_at num
-end
-
-def click_door(num)
-  @view_status = :select_cardset
-  @using_card = {card: @dungeon[num], target: nil, pos: num}
-  @cardset = make_cardset
-end
-
-def take_item(num)
-  if @bag.size >= 8
-    add_log("バッグがいっぱいだ")
-    return 
-  end
-  Sound[:take_item].play
-  @bag.push @dungeon[num]
-  @dungeon.delete_at num
-end
-
 def click_bag(num,com)
   card = @bag[num]
 
@@ -136,58 +107,9 @@ def click_bag(num,com)
   end
 end
 
-def calc_trap
-  @dungeon.select{|c|c.trap?}.each do |trap|
-    if rand(4) <= @escape_trap
-      add_log(trap.name+"をうまく避けた")
-      next
-    else
-      Sound[:trap].play
-      add_log(trap.name+"を踏んだ")
-      calc_trap_d(trap.id)
-    end
-  end
-end
-
-def calc_trap_d(id)
-  case(id)
-  when 0 #トラバサミ
-    @run_max_floor = 0
-  when 1 #矢の罠
-    damage(2,"矢の罠")
-  when 2 #召喚スイッチ
-    size = @dungeon.select{|c|!c.trap?}.size
-    @deck += @dungeon.select{|c|!c.trap?}
-    size.times do 
-      @dungeon.pop
-    end
-    @deck = @deck.select{|c|c.monster?}+@deck.select{|c|!c.monster?}
-    size.times do 
-      @dungeon << @deck.shift
-    end
-    @deck.shuffle!
-  when 3 #毒矢の罠
-    damage(2,"毒矢の罠")
-    @hp_buff -= 2
-    calc_status
-  end
-end
-
 def go_to_next_floor(first_floor=false)
   if monster_exist?
     add_log("この階にはまだモンスターがいる")
-    return false
-  end
-  if @deck.size == 0 and @withdraw
-    @game_clear = true
-    @view_status = :game_clear
-    Sound[:game_clear].play
-    if @completed
-     add_log("あなたはダンジョンを踏破し、無事生還した！")
-    else
-     add_log("あなたはダンジョンから無事脱出した！")
-    end
-    @bag.select{|c|c.treasure?}.each{|e|@score += e.pt}
     return false
   end
   return false if @deck.size == 0
@@ -198,32 +120,25 @@ def go_to_next_floor(first_floor=false)
   refresh_status
 
   if first_floor
-    @deck = @deck.reject{|c|c.trap?}.shuffle + @deck.select{|c|c.trap?}
+    @deck = @deck.reject{|c|c.trap? || c.stairs?}.shuffle + @deck.select{|c|c.trap? || c.stairs?}
     5.times do 
       @dungeon << @deck.shift
     end
-    @deck.shuffle!
+    @deck = @deck.reject{|c|c.stairs?}.shuffle+@deck.select{|c|c.stairs?}
   else
     5.times do 
-      if @deck.size == 0
-        @dungeon << Stairs.new(:down_stairs,@layer)
-        break
-      end
-      @dungeon << @deck.pop
+      @dungeon << @deck.shift
+      break if @deck.size == 0
     end
+
     #罠を先頭に持ってくる
     @dungeon = @dungeon.select{|c|c.trap?}+@dungeon.select{|c|!c.trap?}
     Sound[:stairs].play
     calc_trap
-    if @deck.size == 0 && !@withdraw && !@completed 
-      add_log("この層の最深部に到達した") 
-      @completed = true
-    end
   end
 end
 
 def start_withdrawal
-  return false if @deck.size+5 >= @dungeon_max
   return false if @withdraw
   if monster_exist?
     add_log("この階にはまだモンスターがいる")
@@ -231,57 +146,62 @@ def start_withdrawal
   end
   @withdraw = true
   Sound[:click].play
-  (@dungeon_max-@deck.size-@stock.size-5).times do
+  (@dungeon_max-@deck.size-@stock.size-6).times do
     @stock << Card.new(:blank,0)
   end
+  @stock << Stairs.new(:up_stairs,@layer)
   @dungeon = []
   @deck = @stock
   @stock = []
-  @deck.shuffle!
+  deck_shuffle
   go_to_next_floor
 end
 
-def open_door(num)
-  add_log("扉を開けた")
-  @deck += @cardset[num]
-  @deck.shuffle!
-  @dungeon_max += @cardset[num].size
-  @dungeon.delete_at @using_card[:pos]
-  Sound[:door].play
-  @cardset = []
-  @using_card = nil
-  @view_status = :main_view
-end
-
-def cancel_select_cardset
-  add_log("この扉は開けないことにした")
-  @dungeon.delete_at @using_card[:pos]
-  @using_card = nil
-  @view_status = :main_view
-  @cardset = []
-end
-
-def make_cardset
-  c = []
-  minus = [:monster,:trap]
-  plus = [:weapon,:shield,:potion,:scroll,:rune,:treasure]
-  3.times do
-    t = []
-    if rand(2) == 0
-      t << make_card_at_random(minus.sample,2)
-      2.times do
-        t << make_card_at_random(plus.sample,1)
-      end  
-    else
-      t << make_card_at_random(plus.sample,2)
-      2.times do
-        t << make_card_at_random(minus.sample,1)
-      end   
+def click_stairs(num)
+  card = @dungeon[num]
+  if monster_exist?
+    add_log("この階にはまだモンスターがいる")
+    return false
+  end
+  if card.down_stairs?
+    @stock += @dungeon.reject{|c|c.trap? || c.rune? || c.stairs?} #罠、ルーン、階段以外をストックに
+    temp = []
+    (@dungeon_max-@stock.size-1).times do
+      temp << Card.new(:blank,0)
     end
-    c << t
+    temp << Stairs.new(:up_stairs,@layer)
+    @stock += temp
+    @deck_reserve[@layer] = @stock
+    @dungeon = []
+    @stock = []
+    @layer += 1
+    init_deck
+  elsif card.up_stairs?
+    if @layer == 0
+      calc_game_clear
+    else
+      @layer -= 1
+      @deck = @deck_reserve[@layer]
+      @dungeon = []
+      @stock = []
+      @dungeon_max = @deck.size
+      go_to_next_floor(true)
+    end
   end
 
-  return c
+end
+
+def calc_game_clear
+  @game_clear = true
+  @view_status = :game_clear
+  Sound[:game_clear].play
+  if @completed
+   add_log("あなたはダンジョンを踏破し、無事生還した！")
+  else
+   add_log("あなたはダンジョンから無事脱出した！")
+  end
+  @bag.select{|c|c.treasure?}.each{|e|@score += e.pt}
+  return false
 end
 
 end

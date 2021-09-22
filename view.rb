@@ -95,16 +95,10 @@ class View
 
     Window.draw(500,160,@buttonback)
     button_green = (@controller.pos_button == 0 && !@game.click_mode)
-    if @game.deck.size == 0 and @game.withdraw
-      Window.draw_font(510,165,"帰還する",Font20,mouseover_color(button_green))
-    elsif @game.deck.size == 0
-      Window.draw_font(510,165,"次の階へ",Font20,{color: BLACK})
-    else
-      Window.draw_font(510,165,"次の階へ",Font20,mouseover_color(button_green))
-    end
+    Window.draw_font(510,165,"次の階へ",Font20,@game.deck.size == 0 ? {color: BLACK} : mouseover_color(button_green))
 
     Window.draw(500,200,@buttonback)
-    if @game.withdraw || @game.deck.size+5 >= @game.dungeon_max
+    if @game.withdraw
       color = {color: BLACK}
     else
       color = mouseover_color(@controller.pos_button == 1 && !@game.click_mode)
@@ -128,7 +122,7 @@ class View
 
     Window.draw_font(30,300,"HP #{@game.hp} / #{@game.max_hp}  ATK #{@game.atk}",Font14)
     Window.draw_font(30,320,"逃げる 残り#{@game.rest_run}回",Font14)
-    Window.draw_font(30,340,"残り #{@game.deck.size == 0 ? 0: @game.deck.size+1} 枚",Font14) #階段の分、1枚足した数を表示
+    Window.draw_font(30,340,"残り #{@game.deck.size} 枚",Font14)
     Window.draw_font(30,360,"捨札 #{@game.stock.size} 枚",Font14)
     
   end

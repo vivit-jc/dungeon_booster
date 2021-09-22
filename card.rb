@@ -49,8 +49,13 @@ class Stairs < Card
       @text = LAYER[num+1]+@text
       @name = LAYER[num+1]+@name
     elsif kind == :up_stairs
-      @text = LAYER[num-1]+@text
-      @name = LAYER[num-1]+@name  
+      if num == 0
+        @text = "ダンジョンの出口だ！"
+        @name = "出口への階段"
+      else
+        @text = LAYER[num-1]+@text
+        @name = LAYER[num-1]+@name
+      end
     end
   end
 end

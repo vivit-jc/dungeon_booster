@@ -2,6 +2,8 @@ require_remote './card.rb'
 require_remote './click.rb'
 require_remote './item.rb'
 require_remote './monster.rb'
+require_remote './door.rb'
+require_remote './trap.rb'
 require_remote './misc.rb'
 
 class Game
@@ -9,6 +11,8 @@ class Game
 include Click
 include Item
 include Monster
+include Door
+include Trap
 include Misc
 
 attr_accessor :status, :page, :view_status
@@ -45,6 +49,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @escape_trap = 0
     @using_card = nil
     @layer = 0
+    @deck_reserve = [[],[],[],[]]
 
     @withdraw = false
     @game_clear = false
@@ -71,16 +76,39 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
   def init_deck
 
     @deck = []
-    @deck << make_card_at_random(:rune,1)
-    @deck << make_card_at_random(:weapon,1)
-    @deck << make_card_at_random(:shield,1)
-    2.times{@deck << make_card_at_random(:monster,2)}
-    7.times{@deck << make_card_at_random(:monster,1)}
-    3.times{@deck << make_card_at_random(:door,1)}
-    3.times{@deck << make_card_at_random(:trap,1)}
-    7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
 
-    @dungeon_max = @deck.size+1
+    case @layer
+    when 0
+=begin
+      @deck << Stairs.new(:down_stairs,@layer)
+      @deck << make_card_at_random(:rune,1)
+      @deck << make_card_at_random(:weapon,1)
+      @deck << make_card_at_random(:shield,1)
+      2.times{@deck << make_card_at_random(:monster,2)}
+      7.times{@deck << make_card_at_random(:monster,1)}
+      3.times{@deck << make_card_at_random(:door,1)}
+      3.times{@deck << make_card_at_random(:trap,1)}
+      7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
+=end
+      @deck << Stairs.new(:down_stairs,@layer)
+      9.times{@deck << make_card_at_random(:weapon,1)}
+    when 1
+=begin      
+      @deck << Stairs.new(:down_stairs,@layer)
+      @deck << make_card_at_random(:rune,2)
+      @deck << make_card_at_random(:weapon,2)
+      @deck << make_card_at_random(:shield,2)
+      10.times{@deck << make_card_at_random(:monster,2)}
+      3.times{@deck << make_card_at_random(:door,1)}
+      3.times{@deck << make_card_at_random(:trap,1)}
+      7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
+=end
+      @deck << Stairs.new(:down_stairs,@layer)
+      9.times{@deck << make_card_at_random(:shield,1)}
+
+    end
+
+    @dungeon_max = @deck.size
     go_to_next_floor(true)
   end
 

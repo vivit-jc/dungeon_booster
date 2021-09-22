@@ -1,5 +1,30 @@
 module Item
 
+# アイテムとルーンの処理をまとめたmodule
+
+def take_item(num)
+  if @bag.size >= 8
+    add_log("バッグがいっぱいだ")
+    return 
+  end
+  Sound[:take_item].play
+  @bag.push @dungeon[num]
+  @dungeon.delete_at num
+end
+
+def click_rune(num)
+  card = @dungeon[num]
+  if monster_exist?
+    add_log("この階にはまだモンスターがいる")
+    return false
+  end
+  Sound[:rune].play
+  add_log("隠されたルーンを唱えた")
+  add_log(card.name+"が発動した "+card.text)
+  chant_rune(card.id)
+  @dungeon.delete_at num
+end
+
 def use_potion(id)
   case(id)
   when 0 # 回復薬
