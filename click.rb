@@ -13,6 +13,8 @@ def click_dungeon(num,com)
     click_rune(num)
   elsif card.door?
     click_door(num)
+  elsif card.stairs?
+    p "click_stairs"
   end
 end
 
@@ -196,16 +198,18 @@ def go_to_next_floor(first_floor=false)
   refresh_status
 
   if first_floor
-    no_trap = @deck.select{|c|!c.trap?}
-    traps = @deck.select{|c|c.trap?}
-    5.times do
-      @dungeon.push no_trap.pop
+    @deck = @deck.reject{|c|c.trap?}.shuffle + @deck.select{|c|c.trap?}
+    5.times do 
+      @dungeon << @deck.shift
     end
-    @deck = (no_trap+traps).shuffle
+    @deck.shuffle!
   else
     5.times do 
-      @dungeon.push @deck.pop
-      break if @deck.size == 0
+      if @deck.size == 0
+        @dungeon << Stairs.new(:down_stairs,@layer)
+        break
+      end
+      @dungeon << @deck.pop
     end
     #罠を先頭に持ってくる
     @dungeon = @dungeon.select{|c|c.trap?}+@dungeon.select{|c|!c.trap?}

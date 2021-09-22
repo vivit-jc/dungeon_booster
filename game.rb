@@ -44,6 +44,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @run_max_floor = nil
     @escape_trap = 0
     @using_card = nil
+    @layer = 0
 
     @withdraw = false
     @game_clear = false
@@ -79,8 +80,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     3.times{@deck << make_card_at_random(:trap,1)}
     7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
 
-    @dungeon_max = @deck.size
-    @deck.shuffle!
+    @dungeon_max = @deck.size+1
     go_to_next_floor(true)
   end
 

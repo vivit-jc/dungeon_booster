@@ -57,6 +57,10 @@ module Viewdungeon
       com = ["拾う"]  
     elsif card.door?
       com = ["開ける"]
+    elsif card.down_stairs?
+      com = ["下りる"]
+    elsif card.up_stairs?
+      com = ["上る"]
     else
       com = []
     end

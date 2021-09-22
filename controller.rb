@@ -67,8 +67,10 @@ class Controller
       @game.open_door(pos_cardset) if pos_cardset
       @game.cancel_select_cardset if pos_cancel_select_cardset
     elsif @game.view_status == :gameover or @game.view_status == :game_clear
-      @game.initialize if pos_back_to_title
-      Sound[:click].play
+      if pos_back_to_title
+        @game.initialize 
+        Sound[:click].play
+      end
     elsif @game.view_status == :help
       @game.call_help
     end

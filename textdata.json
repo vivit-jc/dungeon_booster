@@ -43,5 +43,11 @@
 	],
 	"door":[
 		{"id":0,"name":"扉","text":"新たな部屋の扉を開ける。","tier":1}
+	],
+	"down_stairs":[
+		{"id":0,"name":"への階段","text":"に下りる階段。","tier":1}
+	],
+	"up_stairs":[
+		{"id":0,"name":"への階段","text":"に上る階段。","tier":1}
 	]
 }

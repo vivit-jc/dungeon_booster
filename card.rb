@@ -16,7 +16,7 @@ attr_reader :num, :kind, :name, :text, :pt, :id, :select_target, :tier
   end
 
   def self.define_kind
-    [:weapon, :shield, :monster, :potion, :scroll, :rune, :trap, :treasure, :door, :blank].each do |e|
+    [:weapon, :shield, :monster, :potion, :scroll, :rune, :trap, :treasure, :door, :blank, :up_stairs, :down_stairs].each do |e|
       define_method(e.to_s+"?") do
         @kind == e
       end
@@ -33,12 +33,24 @@ attr_reader :num, :kind, :name, :text, :pt, :id, :select_target, :tier
   end
 
   def equip?
-    case @kind
-    when :weapon,:shield
-      return true
-    else
-      return false
-    end
+    @kind == :weapon || @kind == :shield
   end
 
+  def stairs?
+    @kind == :up_stairs || @kind == :down_stairs
+  end
+
+end
+
+class Stairs < Card
+  def initialize(kind,num)
+    super(kind,0)
+    if kind == :down_stairs
+      @text = LAYER[num+1]+@text
+      @name = LAYER[num+1]+@name
+    elsif kind == :up_stairs
+      @text = LAYER[num-1]+@text
+      @name = LAYER[num-1]+@name  
+    end
+  end
 end

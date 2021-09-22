@@ -128,7 +128,7 @@ class View
 
     Window.draw_font(30,300,"HP #{@game.hp} / #{@game.max_hp}  ATK #{@game.atk}",Font14)
     Window.draw_font(30,320,"逃げる 残り#{@game.rest_run}回",Font14)
-    Window.draw_font(30,340,"残り #{@game.deck.size} 枚",Font14)
+    Window.draw_font(30,340,"残り #{@game.deck.size == 0 ? 0: @game.deck.size+1} 枚",Font14) #階段の分、1枚足した数を表示
     Window.draw_font(30,360,"捨札 #{@game.stock.size} 枚",Font14)
     
   end
