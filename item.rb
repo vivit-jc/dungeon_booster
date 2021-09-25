@@ -66,7 +66,7 @@ def chant_rune(id)
     @hp_buff += 5
     calc_status
   when 1 # 俊敏
-    @escape_trap += 2
+    @escape_trap += 1
   when 2 # 筋力増強
     @atk_buff += 1
     calc_status    

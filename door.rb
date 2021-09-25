@@ -8,7 +8,11 @@ end
 
 def open_door(num)
   add_log("扉を開けた")
-  @deck += @cardset[num]
+  if @deck.size > 0
+    @deck += @cardset[num]
+  else #その層の最後の階で扉を開けた場合、復路にカードが追加される
+    @stock += @cardset[num]    
+  end
   deck_shuffle
   @dungeon_max += @cardset[num].size
   @dungeon.delete_at @using_card[:pos]

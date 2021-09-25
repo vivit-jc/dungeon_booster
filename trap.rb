@@ -2,7 +2,7 @@ module Trap
 
 def calc_trap
   @dungeon.select{|c|c.trap?}.each do |trap|
-    if rand(4) <= @escape_trap
+    if rand(10) < @escape_trap
       add_log(trap.name+"をうまく避けた")
       next
     else
