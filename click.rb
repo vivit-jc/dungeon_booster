@@ -188,6 +188,7 @@ def click_stairs(num)
       go_to_next_floor(true)
     end
   end
+  Sound[:stairs].play
 
 end
 

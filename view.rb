@@ -118,12 +118,12 @@ class View
     end
 
     Window.draw(20,260,@infoback)
-    Window.draw(30,274,@hp_gage)
-
-    Window.draw_font(30,300,"HP #{@game.hp} / #{@game.max_hp}  ATK #{@game.atk}",Font14)
-    Window.draw_font(30,320,"逃げる 残り#{@game.rest_run}回",Font14)
-    Window.draw_font(30,340,"残り #{@game.deck.size} 枚",Font14)
-    Window.draw_font(30,360,"捨札 #{@game.stock.size} 枚",Font14)
+    Window.draw_font(30,270,"ダンジョン #{LAYER[@game.layer]}",Font14)
+    Window.draw(30,296,@hp_gage)
+    Window.draw_font(30,320,"HP #{@game.hp} / #{@game.max_hp}  ATK #{@game.atk}",Font14)
+    Window.draw_font(30,340,"逃げる 残り#{@game.rest_run}回",Font14)
+    Window.draw_font(30,360,"残り #{@game.deck.size} 枚",Font14)
+    Window.draw_font(30,380,"捨札 #{@game.stock.size} 枚",Font14)
     
   end
 

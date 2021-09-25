@@ -17,7 +17,7 @@ include Misc
 
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :atk, :hp, :max_hp, :log, :e_weapon, :e_shield,
-:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_card, :help_page, :select_mode, :cardset, :score
+:run, :run_max, :withdraw, :gameover, :dungeon_max, :using_card, :help_page, :select_mode, :cardset, :score, :layer
 
 
   def initialize
@@ -79,7 +79,6 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
 
     case @layer
     when 0
-=begin
       @deck << Stairs.new(:down_stairs,@layer)
       @deck << make_card_at_random(:rune,1)
       @deck << make_card_at_random(:weapon,1)
@@ -89,11 +88,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
       3.times{@deck << make_card_at_random(:door,1)}
       3.times{@deck << make_card_at_random(:trap,1)}
       7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
-=end
-      @deck << Stairs.new(:down_stairs,@layer)
-      9.times{@deck << make_card_at_random(:weapon,1)}
-    when 1
-=begin      
+    when 1  
       @deck << Stairs.new(:down_stairs,@layer)
       @deck << make_card_at_random(:rune,2)
       @deck << make_card_at_random(:weapon,2)
@@ -102,10 +97,6 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
       3.times{@deck << make_card_at_random(:door,1)}
       3.times{@deck << make_card_at_random(:trap,1)}
       7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
-=end
-      @deck << Stairs.new(:down_stairs,@layer)
-      9.times{@deck << make_card_at_random(:shield,1)}
-
     end
 
     @dungeon_max = @deck.size

@@ -3,46 +3,68 @@
 	    {"name":"","text":""}	
 	],
 	"monster":[
-		{"id":0,"name":"スライム","pt":1,"text":"","tier":1},
-		{"id":1,"name":"巨大ナメクジ","pt":2,"text":"","tier":1},
-		{"id":2,"name":"酸のスライム","pt":4,"text":"戦闘後、装備中の武器が壊れる。","tier":2},
-		{"id":3,"name":"スケルトン","pt":6,"text":"","tier":2},
-		{"id":4,"name":"大蜘蛛","pt":5,"text":"戦闘後、この階の逃げる回数-1。","tier":2}
+		{"id":0,"name":"スライム","pt":1,"text":"","tier":1,"layer":1},
+		{"id":1,"name":"巨大ナメクジ","pt":2,"text":"","tier":1,"layer":1},
+		{"id":2,"name":"酸のスライム","pt":4,"text":"【酸】戦闘後、装備中の武器が壊れる。","tier":2,"layer":1},
+		{"id":3,"name":"スケルトン","pt":6,"text":"","tier":2,"layer":1},
+		{"id":4,"name":"大蜘蛛","pt":5,"text":"戦闘後、この階の逃げる回数-1。","tier":2,"layer":1},
+		{"id":5,"name":"ピクシー","pt":1,"text":"戦闘が始まる前に、バッグのアイテムを盗んでどこかに逃げる。","tier":1,"layer":2},
+        {"id":6,"name":"悪魔の目玉","pt":5,"text":"このモンスターがいる間、アイテムを拾えない。","tier":2,"layer":1},
+		{"id":7,"name":"サラマンダー","pt":3,"text":"【火炎】戦闘が始まる前に1ダメージ受ける。","tier":2,"layer":2},
+        {"id":8,"name":"ゴーレム","pt":5,"text":"このモンスターは魔法によるダメージを受けない。","tier":2,"layer":1},
+        {"id":9,"name":"サイクロプス","pt":5,"text":"","tier":2,"layer":1},
+        {"id":10,"name":"コカトリス","pt":5,"text":"【石化】戦闘後、ATK-1。","tier":2,"layer":1},
+        {"id":11,"name":"ゴースト","pt":5,"text":"このモンスターとの戦闘では、武器のATKは無視される。","tier":2,"layer":1},
+		{"id":12,"name":"レッドドラゴン","pt":5,"text":"【火炎】戦闘が始まる前に3ダメージ受ける。","tier":2,"layer":1}
+			
 	],
 	"trap":[
 		{"id":0,"name":"トラバサミ","text":"この階では逃げることができない。","tier":1},
 		{"id":1,"name":"矢の罠","text":"2ダメージを受ける。","tier":1},
 		{"id":2,"name":"召喚スイッチ","text":"この階がモンスターでいっぱいになる。","tier":2},
-		{"id":3,"name":"毒矢の罠","text":"2ダメージを受ける。最大HP-2。","tier":2}
+		{"id":3,"name":"毒矢の罠","text":"2ダメージを受ける。最大HP-2。","tier":2},
+		{"id":4,"name":"巨石の罠","text":"5ダメージを受ける。","tier":2},
+		{"id":5,"name":"感覚鈍化の罠","text":"この層の間、罠を避けることができなくなる。","tier":2},
+		{"id":6,"name":"朦朧の罠","text":"この層の間、巻物を読むことができなくなる。","tier":2},
+		{"id":7,"name":"魔物活性化の罠","text":"この層のモンスターが増える。","tier":2}
 	],
 	"potion":[
-		{"id":0,"name":"回復薬","text":"HPを全回復する。","tier":1},
-		{"id":1,"name":"体力増強薬","text":"最大HP+2。","tier":2}
+		{"id":0,"name":"回復薬","text":"HPを15回復し、状態異常を回復する。","tier":1},
+		{"id":1,"name":"体力増強薬","text":"最大HP+2。","tier":2},
+		{"id":2,"name":"完全回復薬","text":"HPを全回復し、状態異常を回復する。","tier":1}
 	],
 	"scroll":[
 		{"id":0,"name":"火炎の巻物","text":"敵1体に5ダメージ。","select_target":true,"tier":1},
 		{"id":1,"name":"引き寄せの巻物","text":"この階のアイテムを引き寄せる。","select_target":false,"tier":1},
-		{"id":2,"name":"稲妻の巻物","text":"同じ階のすべての敵に2ダメージ。","select_target":false,"tier":2}
+		{"id":2,"name":"煙幕の巻物","text":"モンスターを無視して次の階に進める。ただしアイテムも拾えない。","select_target":false,"tier":2},
+		{"id":3,"name":"稲妻の巻物","text":"同じ階のすべての敵に2ダメージ。","select_target":false,"tier":2},
+		{"id":4,"name":"解錠の巻物","text":"鍵の掛かった扉を開ける。","select_target":false,"tier":2},
+		{"id":5,"name":"排除の巻物","text":"同じ階のモンスターをどこかにテレポートさせる。","select_target":false,"tier":2},
+		{"id":6,"name":"複製の巻物","text":"バッグのアイテムのどれか１つを複製する。","select_target":false,"tier":2},
+		{"id":7,"name":"脱出の巻物","text":"ダンジョンから脱出し、町に戻る。","select_target":false,"tier":2}
 	],
 	"weapon":[
-		{"id":0,"name":"木の剣","text":"ATK+1  木の剣。素手よりはマシ。","pt":1,"tier":1},
-	    {"id":1,"name":"青銅の剣","text":"ATK+2  青銅の剣。冒険者の定番。","pt":2,"tier":2}	
+		{"id":0,"name":"木の剣","text":"ATK+1","pt":1,"tier":1},
+	    {"id":1,"name":"青銅の剣","text":"ATK+2","pt":2,"tier":2},
+	    {"id":2,"name":"鋼の剣","text":"ATK+3","pt":2,"tier":2}
 	],
 	"shield":[
-		{"id":0,"name":"木の盾","text":"最大HP+2  木の盾。あまり丈夫ではない。","pt":2,"tier":1},
-	    {"id":1,"name":"青銅の盾","text":"最大HP+4  青銅の盾。これがあれば大体なんとかなる。","pt":4,"tier":2}			
+		{"id":0,"name":"木の盾","text":"最大HP+2","pt":2,"tier":1},
+	    {"id":1,"name":"青銅の盾","text":"最大HP+4","pt":4,"tier":2},
+	    {"id":2,"name":"青銅の盾","text":"最大HP+6","pt":4,"tier":2}					
 	],
 	"rune":[
 		{"id":0,"name":"体力増強のルーン","text":"最大HP+5。","tier":1},
-		{"id":1,"name":"危険察知のルーン","text":"この層にいる間、罠を避ける確率+50%。","tier":1},
+		{"id":1,"name":"危険察知のルーン","text":"罠を避ける確率+10%。","tier":1},
 	    {"id":2,"name":"筋力増強のルーン","text":"ATK+1。","tier":2}
 	],
 	"treasure":[
 		{"id":0,"name":"立派な指輪","text":"売れば金になりそうだ。","pt":20,"tier":1},
-		{"id":1,"name":"ネックレス","text":"売れば金になりそうだ。","pt":40,"tier":2}
+		{"id":1,"name":"ネックレス","text":"売れば金になりそうだ。","pt":40,"tier":2},
+		{"id":2,"name":"銀の彫像","text":"売れば金になりそうだ。","pt":80,"tier":3}
 	],
 	"door":[
-		{"id":0,"name":"扉","text":"新たな部屋の扉を開ける。","tier":1}
+		{"id":0,"name":"扉","text":"新たなカードがこの層に追加される。","tier":1}
 	],
 	"down_stairs":[
 		{"id":0,"name":"への階段","text":"に下りる階段。","tier":1}
