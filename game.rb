@@ -78,7 +78,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @deck = []
 
     case @layer
-    when 0
+    when 0 #上層
       @deck << Stairs.new(:down_stairs,@layer)
       @deck << make_card_at_random(:rune,1)
       @deck << make_card_at_random(:weapon,1)
@@ -88,7 +88,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
       3.times{@deck << make_card_at_random(:door,1)}
       3.times{@deck << make_card_at_random(:trap,1)}
       7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
-    when 1  
+    when 1 #中層
       @deck << Stairs.new(:down_stairs,@layer)
       @deck << make_card_at_random(:rune,2)
       @deck << make_card_at_random(:weapon,2)
@@ -97,49 +97,29 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
       3.times{@deck << make_card_at_random(:door,1)}
       3.times{@deck << make_card_at_random(:trap,1)}
       7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
+    when 2 #下層
+      @deck << Stairs.new(:down_stairs,@layer)
+      @deck << make_card_at_random(:rune,2)
+      @deck << make_card_at_random(:weapon,2)
+      @deck << make_card_at_random(:shield,2)
+      10.times{@deck << make_card_at_random(:monster,2)}
+      3.times{@deck << make_card_at_random(:door,1)}
+      3.times{@deck << make_card_at_random(:trap,1)}
+      7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
+    when 3 #最下層
+      @deck << Card.new(:treasure,4)
+      @deck << make_card_at_random(:rune,2)
+      @deck << make_card_at_random(:weapon,2)
+      @deck << make_card_at_random(:shield,2)
+      10.times{@deck << make_card_at_random(:monster,2)}
+      3.times{@deck << make_card_at_random(:door,1)}
+      3.times{@deck << make_card_at_random(:trap,1)}
+      7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
+
     end
 
     @dungeon_max = @deck.size
     go_to_next_floor(true)
-  end
-
-  def add_log(str)
-    @log.push str
-  end
-
-  def damage(num,src)
-    @hp -= num
-    check_death(src)
-  end
-
-  def check_death(src)
-    return false if @hp > 0
-    Sound[:gameover].play
-    add_log(src+"により致命傷を負った")
-    add_log("あなたは息絶えた・・・")
-    @gameover = true
-    @view_status = :gameover
-  end
-
-  def monster_exist_front?(num)
-    num.times do |i|
-      return true if @dungeon[i].kind == :monster
-    end
-    return false
-  end
-
-  def monster_exist?
-    @dungeon.find{|c|c.kind == :monster}
-  end
-
-  def rest_run
-    if @run_max_floor
-      return @run_max_floor #今の所トラバサミのみが関係する
-    elsif @run_max <= @run
-      return 0
-    else
-      return @run_max - @run
-    end
   end
 
 end

@@ -58,4 +58,44 @@ def deck_shuffle
   @deck = @deck.reject{|c|c.stairs?}.shuffle+@deck.select{|c|c.stairs?}
 end
 
+def add_log(str)
+  return if @gameover
+  @log.push str
+end
+
+def damage(num,src)
+  @hp -= num
+  check_death(src)
+end
+
+def check_death(src)
+  return false if @hp > 0
+  Sound[:gameover].play
+  add_log(src+"により致命傷を負った")
+  add_log("あなたは息絶えた・・・")
+  @gameover = true
+  @view_status = :gameover
+end
+
+def monster_exist_front?(num)
+  num.times do |i|
+    return true if @dungeon[i].kind == :monster
+  end
+  return false
+end
+
+def monster_exist?
+  @dungeon.find{|c|c.kind == :monster}
+end
+
+def rest_run
+  if @run_max_floor
+    return @run_max_floor #今の所トラバサミのみが関係する
+  elsif @run_max <= @run
+    return 0
+  else
+    return @run_max - @run
+  end
+end
+
 end
