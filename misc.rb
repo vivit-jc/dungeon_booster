@@ -77,6 +77,23 @@ def check_death(src)
   @view_status = :gameover
 end
 
+def calc_reset_status
+  @max_hp = 10
+  @hp = 10
+  @max_hp = 10
+  @base_hp = 10
+  @e_weapon = nil
+  @e_shield = nil
+  @atk = 0
+  @atk_buff = 0
+  @hp_buff = 0
+  @run = 0
+  @run_max = 2
+  @escape_trap = 2
+  @withdraw = false
+  @log = []
+end
+
 def monster_exist_front?(num)
   num.times do |i|
     return true if @dungeon[i].kind == :monster

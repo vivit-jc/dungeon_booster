@@ -74,6 +74,10 @@ def chant_rune(id)
 end
 
 def dispose_item_select
+  if @place != :dungeon
+    add_log("捨てるくらいなら売るか寄贈した方がいいだろう")
+    return
+  end
   @click_mode = :select_bag
   @select_mode = :dispose
   add_log("どれを捨てる？")

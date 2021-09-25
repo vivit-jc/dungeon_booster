@@ -1,12 +1,14 @@
 require_remote './viewmisc.rb'
 require_remote './viewbag.rb'
 require_remote './viewdungeon.rb'
+require_remote './viewtown.rb'
 
 class View
 
   include Viewmisc
   include Viewbag
   include Viewdungeon
+  include Viewtown
 
   def initialize(game,controller)
     @game = game
@@ -79,13 +81,28 @@ class View
     when :select_cardset
       draw_select_cardset
     when :main_view
-      @view_status_buff = :main_view
-      draw_dungeon
-      draw_bag
-      draw_info
-      draw_log
-      draw_button
+      case @game.place
+      when :dungeon
+        draw_dungeon_view
+      when :town
+        draw_town
+      when :shop
+        draw_shop
+      when :musium
+        draw_musium
+      when :storage
+        draw_storage
+      end
     end
+  end
+
+  def draw_dungeon_view
+    @view_status_buff = :main_view
+    draw_dungeon
+    draw_bag
+    draw_info
+    draw_log
+    draw_button
   end
 
   def draw_button

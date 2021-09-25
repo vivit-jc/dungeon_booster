@@ -172,13 +172,12 @@ def click_stairs(num)
     temp << Stairs.new(:up_stairs,@layer)
     @stock += temp
     @deck_reserve[@layer] = @stock
-    @dungeon = []
-    @stock = []
     @layer += 1
     init_deck
   elsif card.up_stairs?
     if @layer == 0
-      calc_game_clear
+      @place = :town
+      calc_reset_status
     else
       @layer -= 1
       @deck = @deck_reserve[@layer]

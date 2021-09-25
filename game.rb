@@ -4,6 +4,7 @@ require_remote './item.rb'
 require_remote './monster.rb'
 require_remote './door.rb'
 require_remote './trap.rb'
+require_remote './town.rb'
 require_remote './misc.rb'
 
 class Game
@@ -13,11 +14,12 @@ include Item
 include Monster
 include Door
 include Trap
+include Town
 include Misc
 
 attr_accessor :status, :page, :view_status
-attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon, :stock, :atk, :hp, :max_hp, :log, :e_weapon, :e_shield,
-:run, :run_max, :escape_trap, :withdraw, :gameover, :dungeon_max, :using_card, :help_page, :select_mode, :cardset, :score, :layer
+attr_reader :game_status, :game_status_memo, :click_mode, :place, :bag, :deck, :dungeon, :stock, :atk, :hp, :max_hp, :log, :e_weapon, :e_shield,
+:run, :run_max, :escape_trap, :withdraw, :gameover, :dungeon_max, :using_card, :help_page, :select_mode, :cardset, :score, :layer, :money
 
 
   def initialize
@@ -35,6 +37,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @dungeon = []
     @bag = []
     @stock = []
+    @money = 100
     @hp = 10
     @max_hp = 10
     @base_hp = 10
@@ -61,7 +64,6 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
     @help_page = nil
 
     init_testmode
-    init_deck
   end
 
   def start
@@ -70,12 +72,14 @@ attr_reader :game_status, :game_status_memo, :click_mode, :bag, :deck, :dungeon,
   end
 
   def init_testmode
-    @place = :dungeon
+    @place = :town
   end
 
   def init_deck
 
     @deck = []
+    @dungeon = []
+    @stock = []
 
     case @layer
     when 0 #上層

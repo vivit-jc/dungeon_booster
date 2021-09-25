@@ -34,7 +34,21 @@ class Controller
   end
 
   def click_on_game
+    case @game.place
+    when :dungeon
+      click_on_dungeon
+    when :town
+      click_on_town
+    when :shop
+      click_on_shop
+    when :musium
+      click_on_musium
+    when :strorage
+      click_on_storage
+    end
+  end
 
+  def click_on_dungeon
     #各項でreturnするのを忘れないこと！（１クリックで処理が２回行われてしまうため）
     case @game.click_mode
     when :select_monster
@@ -60,9 +74,7 @@ class Controller
       @game.click_bag(pos_bag,pos_bag_command) if pos_bag_command
       @game.go_to_next_floor if pos_button == 0
       @game.start_withdrawal if pos_button == 1
-      @game.sort_bag if pos_bag_sort
-      @game.dispose_item_select if pos_dispose_item
-      @game.call_help if pos_help
+      click_bag_sub_button
     elsif @game.view_status == :select_cardset
       @game.open_door(pos_cardset) if pos_cardset
       @game.cancel_select_cardset if pos_cancel_select_cardset
@@ -74,7 +86,24 @@ class Controller
     elsif @game.view_status == :help
       @game.call_help
     end
+  end
 
+  def click_on_town
+    if @game.view_status == :help
+      @game.call_help
+    elsif @game.view_status == :main_view
+      case pos_town
+      when 3
+        @game.enter_the_dungeon
+      end
+      click_bag_sub_button
+    end
+  end
+
+  def click_bag_sub_button
+    @game.sort_bag if pos_bag_sort
+    @game.dispose_item_select if pos_dispose_item
+    @game.call_help if pos_help
   end
 
   def pos_title_menu
@@ -161,6 +190,23 @@ class Controller
 
   def pos_back_to_title
     return mcheck(30,400,170,420)
+  end
+
+  def pos_town
+    4.times do |i|
+      x = 20+120*i
+      y = 10
+      return i if mcheck(x,y,x+DUNGEON_WIDTH,y+DUNGEON_HEIGHT)
+    end
+  end
+
+  def pos_shop
+  end
+
+  def pos_musium
+  end
+
+  def pos_storage
   end
 
   def get_width(str)
