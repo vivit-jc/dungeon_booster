@@ -6,10 +6,14 @@ def draw_town
     x = 20+120*i
     pos = @controller.pos_town == i
     Window.draw(x,10,@dungeonback)
-    Window.draw_font(x+3,13,bldg,Font16,mouseover_color(pos))
-    if pos
+    Window.draw_font(x+3,13,bldg,Font16,@game.click_mode != :confirm_dungeon ? mouseover_color(pos) : {color: WHITE})
+    if pos && @game.click_mode != :confirm_dungeon
       Window.draw_font(20,130,bldg,Font14)
       Window.draw_font(20,150,text[i],Font14)
+    elsif @game.click_mode == :confirm_dungeon
+      Window.draw_font(20,140,"ダンジョン探索を始めますか？",Font16)
+      Window.draw_font(290,140,"はい",Font16,mouseover_color(@controller.pos_confirm_dungeon == 0))
+      Window.draw_font(340,140,"いいえ",Font16,mouseover_color(@controller.pos_confirm_dungeon == 1))
     end
   end
   draw_town_set

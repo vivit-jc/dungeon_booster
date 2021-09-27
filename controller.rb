@@ -91,6 +91,13 @@ class Controller
   def click_on_town
     if @game.view_status == :help
       @game.call_help
+    elsif @game.click_mode == :confirm_dungeon
+      case pos_confirm_dungeon
+      when 0
+        @game.enter_the_dungeon
+      when 1
+        @game.cancel_confirm_dungeon
+      end
     elsif @game.view_status == :main_view
       case pos_town
       when 0
@@ -98,7 +105,7 @@ class Controller
       when 1
         @game.enter_museum
       when 3
-        @game.enter_the_dungeon
+        @game.confirm_dungeon
       end
       click_bag_sub_button
     end
@@ -235,6 +242,12 @@ class Controller
 
   def pos_back_town
     mcheck(540,110,600,170)
+  end
+
+  def pos_confirm_dungeon
+   return 0 if mcheck(290,140,330,160)
+   return 1 if mcheck(340,140,400,160)
+   return false 
   end
 
   def get_width(str)

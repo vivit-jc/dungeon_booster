@@ -1,12 +1,5 @@
 module Town
 
-def enter_the_dungeon
-  init_deck
-  @explore_count += 1
-  @place = :dungeon
-  Sound[:stairs].play
-end
-
 def enter_shop
   @place = :shop
   Sound[:stairs].play
@@ -56,5 +49,22 @@ def donate_treasure(num)
   @donate_count += 1
   @bag.delete_at num
 end
+
+def confirm_dungeon
+  @click_mode = :confirm_dungeon
+end
+
+def cancel_confirm_dungeon
+  @click_mode = nil
+end
+
+def enter_the_dungeon
+  @click_mode = nil
+  init_deck
+  @explore_count += 1
+  @place = :dungeon
+  Sound[:stairs].play
+end
+
 
 end
