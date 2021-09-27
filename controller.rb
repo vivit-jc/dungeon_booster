@@ -43,7 +43,7 @@ class Controller
       click_on_shop
     when :museum
       click_on_museum
-    when :strorage
+    when :storage
       click_on_storage
     end
   end
@@ -104,6 +104,8 @@ class Controller
         @game.enter_shop
       when 1
         @game.enter_museum
+      when 2
+        @game.enter_storage
       when 3
         @game.confirm_dungeon
       end
@@ -120,6 +122,13 @@ class Controller
 
   def click_on_museum
     @game.donate_treasure(pos_bag) if pos_bag_command == 0
+    @game.back_town if pos_back_town
+    click_bag_sub_button
+  end
+
+  def click_on_storage
+    @game.get_item(pos_storage) if pos_storage
+    @game.put_item(pos_bag) if pos_bag_command == 0
     @game.back_town if pos_back_town
     click_bag_sub_button
   end
@@ -226,22 +235,24 @@ class Controller
   end
 
   def pos_shop
-    @game.shop_item.size.times do |i|
-      x = 20+70*i
-      y = 10
+    pos_storage_or_shop(@game.shop_item)
+  end
+
+  def pos_storage
+    pos_storage_or_shop(@game.storage)
+  end
+
+  def pos_storage_or_shop(cards)
+    cards.size.times do |i|
+      x = 20+70*(i%7)
+      y = 10+82*(i/7).floor
       return i if mcheck(x,10,x+60,y+60)
     end
     return false
   end
 
-  def pos_museum
-  end
-
-  def pos_storage
-  end
-
   def pos_back_town
-    mcheck(540,110,600,170)
+    mcheck(520,92,580,152)
   end
 
   def pos_confirm_dungeon

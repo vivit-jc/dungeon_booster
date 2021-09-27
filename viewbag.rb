@@ -36,6 +36,8 @@ module Viewbag
         str = "売る"
       elsif @game.place == :museum
         str = card.treasure? ? "寄贈" : ""
+      elsif @game.place == :storage
+        str = "入れる"
       elsif card.equip? and (@game.e_weapon == i || @game.e_shield == i)
         str = "外す" 
       elsif card.equip?

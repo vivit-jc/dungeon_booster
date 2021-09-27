@@ -20,36 +20,46 @@ def draw_town
 end
 
 def draw_shop
-  @game.shop_item.each_with_index do |item,i|
-    x = 20+70*i
-    y = 10
+  @game.shop_item.each_with_index do |card,i|
+    x = 20+70*(i%7)
+    y = 10+82*(i/7).floor
     pos = @controller.pos_shop == i
     Window.draw(x,y,@itemback)
-    Window.draw_font(x+8,y+63,item.price.to_s+"Ч",Font16)
-    if pos
-      Window.draw_font(20,130,item.name,Font14)
-      Window.draw_font(20,150,item.text,Font14)
-      Window.draw_font(x+3,y+3,"買う",Font16,{color: GREEN})
-    else
-      Window.draw_scale(x-98,-88,Image[item.kind],0.2,0.2)
-    end
+    Window.draw_font(x+8,y+63,card.price.to_s+"Ч",Font16)
+    draw_item_note(pos,x,y,i,card,"買う")
   end
-  Window.draw(540,110,@itemback)
-  Window.draw_font(543,113,"出る",Font16,mouseover_color(@controller.pos_back_town))
   draw_town_set
+  draw_back_town_button
 end
 
 def draw_museum
   Window.draw_font(20,20,"寄贈した回数 #{@game.donate_count}",Font16)
   Window.draw_font(20,40,"score #{@game.score}",Font16)
   Window.draw_font(20,60,"ダンジョンを探索した回数 #{@game.explore_count}",Font16)
-  Window.draw(540,110,@itemback)
-  Window.draw_font(543,113,"出る",Font16,mouseover_color(@controller.pos_back_town))
   draw_town_set
+  draw_back_town_button
 end
 
 def draw_storage
+  @game.storage.each_with_index do |card,i|
+    x = 20+70*(i%7)
+    y = 10+82*(i/7).floor
+    pos = @controller.pos_storage == i
+    Window.draw(x,y,@itemback)
+    draw_item_note(pos,x,y,i,card,"出す")
+  end
   draw_town_set
+  draw_back_town_button
+end
+
+def draw_item_note(pos,x,y,i,card,com)
+  if pos
+    Window.draw_font(20,181,card.name,Font14)
+    Window.draw_font(20,201,card.text,Font14)
+    Window.draw_font(x+3,y+3,com,Font16,{color: GREEN})
+  else
+    Window.draw_scale(x-98,-88+82*(i/7).floor,Image[card.kind],0.2,0.2)
+  end
 end
 
 def draw_info_town
@@ -58,9 +68,14 @@ def draw_info_town
   Window.draw_font(30,290,"所持金 #{@game.money}Ч",Font14)
 end
 
+def draw_back_town_button
+  Window.draw(520,92,@itemback)
+  Window.draw_font(523,95,"出る",Font16,mouseover_color(@controller.pos_back_town))
+end
+
 def draw_town_set
   draw_bag
-  draw_log
+  draw_log_short
   draw_info_town
 end
 

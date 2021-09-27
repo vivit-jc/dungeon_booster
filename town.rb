@@ -10,13 +10,19 @@ def enter_museum
   Sound[:stairs].play
 end
 
+def enter_storage
+  @place = :storage
+  Sound[:stairs].play
+end
+
 def back_town
   @place = :town
   Sound[:stairs].play
 end
 
 def init_shop
-  @shop_item = [Card.new(:weapon,1),Card.new(:shield,1),Card.new(:potion,0),Card.new(:scroll,0),Card.new(:scroll,0),Card.new(:scroll,0),Card.new(:scroll,0),Card.new(:scroll,0)]
+  @shop_item = [Card.new(:weapon,1),Card.new(:shield,1),Card.new(:potion,0),Card.new(:scroll,0),Card.new(:scroll,0),Card.new(:scroll,0),Card.new(:scroll,0),
+    Card.new(:scroll,0),Card.new(:weapon,1),Card.new(:shield,1),Card.new(:potion,0),Card.new(:scroll,0),Card.new(:scroll,0),Card.new(:scroll,0)]
 end
 
 def buy_item(num)
@@ -48,6 +54,27 @@ def donate_treasure(num)
   add_log("#{card.name}を寄贈した　score +#{card.price}")
   @donate_count += 1
   @bag.delete_at num
+  Sound[:rune].play
+end
+
+def get_item(num)
+  if @bag.size >= 8
+    add_log("バッグがいっぱいだ")
+    return
+  end
+  @bag << @storage[num]
+  @storage.delete_at num
+  Sound[:take_item].play
+end
+
+def put_item(num)
+  if @storage.size >= 14
+    add_log("倉庫はいっぱいだ")
+    return
+  end
+  @storage << @bag[num]
+  @bag.delete_at num
+  Sound[:take_item].play
 end
 
 def confirm_dungeon

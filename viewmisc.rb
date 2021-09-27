@@ -6,6 +6,10 @@ module Viewmisc
     Window.draw_font(20,230,@game.log[@game.log.size-3],Font14) if @game.log.size >= 3
   end
 
+  def draw_log_short
+    Window.draw_font(20,230,@game.log[@game.log.size-1],Font14) if @game.log.size >= 1
+  end
+
   def draw_game_clear
     Window.draw_font(400,60,"score: "+@game.score.to_s,Font20)
     [@game.log.size,10].min.times do |i|
