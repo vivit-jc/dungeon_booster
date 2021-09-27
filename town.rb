@@ -2,12 +2,18 @@ module Town
 
 def enter_the_dungeon
   init_deck
+  @explore_count += 1
   @place = :dungeon
   Sound[:stairs].play
 end
 
 def enter_shop
   @place = :shop
+  Sound[:stairs].play
+end
+
+def enter_museum
+  @place = :museum
   Sound[:stairs].play
 end
 
@@ -40,7 +46,15 @@ def sell_item(num)
   @money += card.price/2
   add_log("#{card.name}を売った")
   @bag.delete_at num
+end
 
+def donate_treasure(num)
+  return unless @bag[num].treasure?
+  card = @bag[num]
+  @score += card.price
+  add_log("#{card.name}を寄贈した　score +#{card.price}")
+  @donate_count += 1
+  @bag.delete_at num
 end
 
 end

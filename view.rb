@@ -88,8 +88,8 @@ class View
         draw_town
       when :shop
         draw_shop
-      when :musium
-        draw_musium
+      when :museum
+        draw_museum
       when :storage
         draw_storage
       end

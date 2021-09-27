@@ -34,6 +34,8 @@ module Viewbag
       pbc = @controller.pos_bag_command
       if @game.place == :shop
         str = "売る"
+      elsif @game.place == :museum
+        str = card.treasure? ? "寄贈" : ""
       elsif card.equip? and (@game.e_weapon == i || @game.e_shield == i)
         str = "外す" 
       elsif card.equip?

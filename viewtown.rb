@@ -12,9 +12,7 @@ def draw_town
       Window.draw_font(20,150,text[i],Font14)
     end
   end
-  draw_bag
-  draw_log
-  draw_info_town
+  draw_town_set
 end
 
 def draw_shop
@@ -34,21 +32,32 @@ def draw_shop
   end
   Window.draw(540,110,@itemback)
   Window.draw_font(543,113,"出る",Font16,mouseover_color(@controller.pos_back_town))
-  draw_bag
-  draw_log
-  draw_info_town
+  draw_town_set
 end
 
-def draw_musium
+def draw_museum
+  Window.draw_font(20,20,"寄贈した回数 #{@game.donate_count}",Font16)
+  Window.draw_font(20,40,"score #{@game.score}",Font16)
+  Window.draw_font(20,60,"ダンジョンを探索した回数 #{@game.explore_count}",Font16)
+  Window.draw(540,110,@itemback)
+  Window.draw_font(543,113,"出る",Font16,mouseover_color(@controller.pos_back_town))
+  draw_town_set
 end
 
 def draw_storage
+  draw_town_set
 end
 
 def draw_info_town
   Window.draw(20,260,@infoback)
   Window.draw_font(30,270,"ダンジョンの上に立つ町",Font14)
   Window.draw_font(30,290,"所持金 #{@game.money}Ч",Font14)
+end
+
+def draw_town_set
+  draw_bag
+  draw_log
+  draw_info_town
 end
 
 end

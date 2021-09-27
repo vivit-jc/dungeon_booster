@@ -41,8 +41,8 @@ class Controller
       click_on_town
     when :shop
       click_on_shop
-    when :musium
-      click_on_musium
+    when :museum
+      click_on_museum
     when :strorage
       click_on_storage
     end
@@ -95,6 +95,8 @@ class Controller
       case pos_town
       when 0
         @game.enter_shop
+      when 1
+        @game.enter_museum
       when 3
         @game.enter_the_dungeon
       end
@@ -105,7 +107,12 @@ class Controller
   def click_on_shop
     @game.buy_item(pos_shop) if pos_shop
     @game.sell_item(pos_bag) if pos_bag_command == 0
+    @game.back_town if pos_back_town
+    click_bag_sub_button
+  end
 
+  def click_on_museum
+    @game.donate_treasure(pos_bag) if pos_bag_command == 0
     @game.back_town if pos_back_town
     click_bag_sub_button
   end
@@ -220,7 +227,7 @@ class Controller
     return false
   end
 
-  def pos_musium
+  def pos_museum
   end
 
   def pos_storage
