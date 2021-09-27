@@ -1,7 +1,7 @@
 class Card
 
 attr_accessor :hp
-attr_reader :num, :kind, :name, :text, :pt, :id, :select_target, :tier
+attr_reader :num, :kind, :name, :text, :pt, :id, :select_target, :tier, :price
   def initialize(kind, num)
     card = CARDDATA[kind][num]
   	@kind = kind
@@ -13,6 +13,7 @@ attr_reader :num, :kind, :name, :text, :pt, :id, :select_target, :tier
     @hp = @pt if monster?
     @select_target = true if card.select_target
     @tier = card.tier
+    @price = card.price if item?
   end
 
   def self.define_kind

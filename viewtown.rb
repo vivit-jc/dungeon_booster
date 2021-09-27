@@ -18,6 +18,25 @@ def draw_town
 end
 
 def draw_shop
+  @game.shop_item.each_with_index do |item,i|
+    x = 20+70*i
+    y = 10
+    pos = @controller.pos_shop == i
+    Window.draw(x,y,@itemback)
+    Window.draw_font(x+8,y+63,item.price.to_s+"Ч",Font16)
+    if pos
+      Window.draw_font(20,130,item.name,Font14)
+      Window.draw_font(20,150,item.text,Font14)
+      Window.draw_font(x+3,y+3,"買う",Font16,{color: GREEN})
+    else
+      Window.draw_scale(x-98,-88,Image[item.kind],0.2,0.2)
+    end
+  end
+  Window.draw(540,110,@itemback)
+  Window.draw_font(543,113,"出る",Font16,mouseover_color(@controller.pos_back_town))
+  draw_bag
+  draw_log
+  draw_info_town
 end
 
 def draw_musium

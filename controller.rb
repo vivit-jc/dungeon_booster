@@ -93,11 +93,21 @@ class Controller
       @game.call_help
     elsif @game.view_status == :main_view
       case pos_town
+      when 0
+        @game.enter_shop
       when 3
         @game.enter_the_dungeon
       end
       click_bag_sub_button
     end
+  end
+
+  def click_on_shop
+    @game.buy_item(pos_shop) if pos_shop
+    @game.sell_item(pos_bag) if pos_bag_command == 0
+
+    @game.back_town if pos_back_town
+    click_bag_sub_button
   end
 
   def click_bag_sub_button
@@ -198,15 +208,26 @@ class Controller
       y = 10
       return i if mcheck(x,y,x+DUNGEON_WIDTH,y+DUNGEON_HEIGHT)
     end
+    return false
   end
 
   def pos_shop
+    @game.shop_item.size.times do |i|
+      x = 20+70*i
+      y = 10
+      return i if mcheck(x,10,x+60,y+60)
+    end
+    return false
   end
 
   def pos_musium
   end
 
   def pos_storage
+  end
+
+  def pos_back_town
+    mcheck(540,110,600,170)
   end
 
   def get_width(str)

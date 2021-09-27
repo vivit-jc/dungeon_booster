@@ -14,22 +14,7 @@ module Viewbag
       else
         Window.draw(x,y,@itemback)
       end
-      if pos && !@game.click_mode
-        pbc = @controller.pos_bag_command
-        if card.equip? and (@game.e_weapon == i || @game.e_shield == i)
-          str = "外す" 
-        elsif card.equip?
-          str = "装備" 
-        elsif card.treasure?
-          str = "眺める"
-        else
-          str = "使う"
-        end
-        Window.draw_font(x+3,y+3,str,Font16,mouseover_color(pbc == 0))
-      else
-        Window.draw_scale(x-98,y-98,Image[card.kind],0.2,0.2) #マウスが乗っていない時にアイコンを表示
-        Window.draw_font(x,y,"E",Font16) if @game.e_weapon == i || @game.e_shield == i
-      end
+      draw_bag_command(i,card,pos)
     end
     
     # アイテム横のボタン
@@ -38,9 +23,32 @@ module Viewbag
     end
     Window.draw_font(545,337,"整理",Font16,mouseover_color((@controller.pos_bag_sort && !@game.click_mode)))
     Window.draw_font(545,377,"捨てる",Font16,mouseover_color(@controller.pos_dispose_item && !@game.click_mode))
-    Window.draw_font(545,417,"ヘルプ",Font16,mouseover_color(@controller.pos_help && !@game.click_mode))
-    
+    Window.draw_font(545,417,"ヘルプ",Font16,mouseover_color(@controller.pos_help && !@game.click_mode))    
   end
 
+  def draw_bag_command(i,card,pos)
+    x = 260+70*(i%5)
+    y = 260+(i/5).floor*70
+
+    if pos && !@game.click_mode && @game.place != :town
+      pbc = @controller.pos_bag_command
+      if @game.place == :shop
+        str = "売る"
+      elsif card.equip? and (@game.e_weapon == i || @game.e_shield == i)
+        str = "外す" 
+      elsif card.equip?
+        str = "装備" 
+      elsif card.treasure?
+        str = "眺める"
+      else
+        str = "使う"
+      end
+      Window.draw_font(x+3,y+3,str,Font16,mouseover_color(pbc == 0))
+      Window.draw_font(x+3,y+23,(card.price/2).to_s+"Ч",Font16) if @game.place == :shop
+    else
+      Window.draw_scale(x-98,y-98,Image[card.kind],0.2,0.2) #マウスが乗っていない時にアイコンを表示
+      Window.draw_font(x,y,"E",Font16) if @game.e_weapon == i || @game.e_shield == i
+    end
+  end
 
 end

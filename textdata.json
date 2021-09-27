@@ -28,29 +28,29 @@
 		{"id":7,"name":"魔物活性化の罠","text":"この層のモンスターが増える。","tier":2}
 	],
 	"potion":[
-		{"id":0,"name":"回復薬","text":"HPを15回復し、状態異常を回復する。","tier":1},
-		{"id":1,"name":"体力増強薬","text":"最大HP+2。","tier":2},
-		{"id":2,"name":"完全回復薬","text":"HPを全回復し、状態異常を回復する。","tier":1}
+		{"id":0,"name":"回復薬","text":"HPを15回復し、状態異常を回復する。","tier":1,"price":20},
+		{"id":1,"name":"体力増強薬","text":"最大HP+2。","tier":2,"price":20},
+		{"id":2,"name":"完全回復薬","text":"HPを全回復し、状態異常を回復する。","tier":1,"price":20}
 	],
 	"scroll":[
-		{"id":0,"name":"火炎の巻物","text":"敵1体に5ダメージ。","select_target":true,"tier":1},
-		{"id":1,"name":"引き寄せの巻物","text":"この階のアイテムを引き寄せる。","select_target":false,"tier":1},
-		{"id":2,"name":"煙幕の巻物","text":"モンスターを無視して次の階に進める。ただしアイテムも拾えない。","select_target":false,"tier":2},
-		{"id":3,"name":"稲妻の巻物","text":"同じ階のすべての敵に2ダメージ。","select_target":false,"tier":2},
-		{"id":4,"name":"解錠の巻物","text":"鍵の掛かった扉を開ける。","select_target":false,"tier":2},
-		{"id":5,"name":"排除の巻物","text":"同じ階のモンスターをどこかにテレポートさせる。","select_target":false,"tier":2},
-		{"id":6,"name":"複製の巻物","text":"バッグのアイテムのどれか１つを複製する。","select_target":false,"tier":2},
-		{"id":7,"name":"脱出の巻物","text":"ダンジョンから脱出し、町に戻る。","select_target":false,"tier":2}
+		{"id":0,"name":"火炎の巻物","text":"敵1体に5ダメージ。","select_target":true,"tier":1,"price":20},
+		{"id":1,"name":"引き寄せの巻物","text":"この階のアイテムを引き寄せる。","select_target":false,"tier":1,"price":20},
+		{"id":2,"name":"煙幕の巻物","text":"モンスターを無視して次の階に進める。ただしアイテムも拾えない。","select_target":false,"tier":2,"price":20},
+		{"id":3,"name":"稲妻の巻物","text":"同じ階のすべての敵に2ダメージ。","select_target":false,"tier":2,"price":20},
+		{"id":4,"name":"解錠の巻物","text":"鍵の掛かった扉を開ける。","select_target":false,"tier":2,"price":20},
+		{"id":5,"name":"排除の巻物","text":"同じ階のモンスターをどこかにテレポートさせる。","select_target":false,"tier":2,"price":20},
+		{"id":6,"name":"複製の巻物","text":"バッグのアイテムのどれか１つを複製する。","select_target":false,"tier":2,"price":20},
+		{"id":7,"name":"脱出の巻物","text":"ダンジョンから脱出し、町に戻る。","select_target":false,"tier":2,"price":20}
 	],
 	"weapon":[
-		{"id":0,"name":"木の剣","text":"ATK+1","pt":1,"tier":1},
-	    {"id":1,"name":"青銅の剣","text":"ATK+2","pt":2,"tier":2},
-	    {"id":2,"name":"鋼の剣","text":"ATK+3","pt":2,"tier":2}
+		{"id":0,"name":"木の剣","text":"ATK+1","pt":1,"tier":1,"price":20},
+	    {"id":1,"name":"青銅の剣","text":"ATK+2","pt":2,"tier":2,"price":100},
+	    {"id":2,"name":"鋼の剣","text":"ATK+3","pt":2,"tier":2,"price":20}
 	],
 	"shield":[
-		{"id":0,"name":"木の盾","text":"最大HP+2","pt":2,"tier":1},
-	    {"id":1,"name":"青銅の盾","text":"最大HP+4","pt":4,"tier":2},
-	    {"id":2,"name":"青銅の盾","text":"最大HP+6","pt":4,"tier":2}					
+		{"id":0,"name":"木の盾","text":"最大HP+2","pt":2,"tier":1,"price":20},
+	    {"id":1,"name":"青銅の盾","text":"最大HP+4","pt":4,"tier":2,"price":100},
+	    {"id":2,"name":"青銅の盾","text":"最大HP+6","pt":4,"tier":2,"price":20}					
 	],
 	"rune":[
 		{"id":0,"name":"体力増強のルーン","text":"最大HP+5。","tier":1},
@@ -58,11 +58,11 @@
 	    {"id":2,"name":"筋力増強のルーン","text":"ATK+1。","tier":2}
 	],
 	"treasure":[
-		{"id":0,"name":"立派な指輪","text":"売れば金になりそうだ。","pt":20,"tier":1},
-		{"id":1,"name":"ネックレス","text":"売れば金になりそうだ。","pt":40,"tier":2},
-		{"id":2,"name":"銀の彫像","text":"売れば金になりそうだ。","pt":80,"tier":3},
-		{"id":3,"name":"ルビーのブローチ","text":"売れば金になりそうだ。","pt":80,"tier":3},
-		{"id":4,"name":"失われし王冠","text":"売れば金になりそうだ。","pt":80,"tier":5}	
+		{"id":0,"name":"立派な指輪","text":"売れば金になりそうだ。","price":20,"tier":1},
+		{"id":1,"name":"ネックレス","text":"売れば金になりそうだ。","price":40,"tier":2},
+		{"id":2,"name":"銀の彫像","text":"売れば金になりそうだ。","price":80,"tier":3},
+		{"id":3,"name":"ルビーのブローチ","text":"売れば金になりそうだ。","price":80,"tier":3},
+		{"id":4,"name":"失われし王冠","text":"売れば金になりそうだ。","price":80,"tier":5}	
 	],
 	"door":[
 		{"id":0,"name":"扉","text":"新たなカードがこの層に追加される。","tier":1}
