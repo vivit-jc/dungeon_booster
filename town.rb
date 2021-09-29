@@ -50,6 +50,10 @@ end
 def donate_treasure(num)
   return unless @bag[num].treasure?
   card = @bag[num]
+  if card.name == "失われし王冠"
+    @click_mode = :confirm_game_clear
+    return
+  end
   @score += card.price
   add_log("#{card.name}を寄贈した　score +#{card.price}")
   @donate_count += 1
@@ -82,6 +86,10 @@ def confirm_dungeon
 end
 
 def cancel_confirm_dungeon
+  @click_mode = nil
+end
+
+def cancel_confirm_game_clear
   @click_mode = nil
 end
 

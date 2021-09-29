@@ -88,42 +88,45 @@ attr_reader :game_status, :game_status_memo, :click_mode, :place, :bag, :deck, :
     case @layer
     when 0 #上層
       @deck << Stairs.new(:down_stairs,@layer)
+      @deck << Card.new(:treasure,4)
       @deck << make_card_at_random(:rune,1)
       @deck << make_card_at_random(:weapon,1)
       @deck << make_card_at_random(:shield,1)
-      2.times{@deck << make_card_at_random(:monster,2)}
+      2.times{@deck << make_card_at_random(:monster,1)}
       7.times{@deck << make_card_at_random(:monster,1)}
       3.times{@deck << make_card_at_random(:door,1)}
       3.times{@deck << make_card_at_random(:trap,1)}
       7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
     when 1 #中層
       @deck << Stairs.new(:down_stairs,@layer)
-      @deck << make_card_at_random(:rune,2)
-      @deck << make_card_at_random(:weapon,2)
-      @deck << make_card_at_random(:shield,2)
-      10.times{@deck << make_card_at_random(:monster,2)}
+      @deck << make_card_at_random(:rune,1)
+      @deck << make_card_at_random(:weapon,1)
+      @deck << make_card_at_random(:shield,1)
+      2.times{@deck << make_card_at_random(:monster,1)}
+      7.times{@deck << make_card_at_random(:monster,1)}
       3.times{@deck << make_card_at_random(:door,1)}
       3.times{@deck << make_card_at_random(:trap,1)}
       7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
     when 2 #下層
       @deck << Stairs.new(:down_stairs,@layer)
-      @deck << make_card_at_random(:rune,2)
-      @deck << make_card_at_random(:weapon,2)
-      @deck << make_card_at_random(:shield,2)
-      10.times{@deck << make_card_at_random(:monster,2)}
+      @deck << make_card_at_random(:rune,1)
+      @deck << make_card_at_random(:weapon,1)
+      @deck << make_card_at_random(:shield,1)
+      2.times{@deck << make_card_at_random(:monster,1)}
+      7.times{@deck << make_card_at_random(:monster,1)}
       3.times{@deck << make_card_at_random(:door,1)}
       3.times{@deck << make_card_at_random(:trap,1)}
       7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
     when 3 #最下層
       @deck << Card.new(:treasure,4)
-      @deck << make_card_at_random(:rune,2)
-      @deck << make_card_at_random(:weapon,2)
-      @deck << make_card_at_random(:shield,2)
-      10.times{@deck << make_card_at_random(:monster,2)}
+      @deck << make_card_at_random(:rune,1)
+      @deck << make_card_at_random(:weapon,1)
+      @deck << make_card_at_random(:shield,1)
+      2.times{@deck << make_card_at_random(:monster,1)}
+      7.times{@deck << make_card_at_random(:monster,1)}
       3.times{@deck << make_card_at_random(:door,1)}
       3.times{@deck << make_card_at_random(:trap,1)}
       7.times{@deck << make_card_at_random([:scroll,:potion,:treasure].sample,1)}
-
     end
 
     @dungeon_max = @deck.size

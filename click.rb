@@ -194,12 +194,10 @@ end
 def calc_game_clear
   @game_clear = true
   @view_status = :game_clear
+  @click_mode = nil
   Sound[:game_clear].play
-  if @completed
-   add_log("あなたはダンジョンを踏破し、無事生還した！")
-  else
-   add_log("あなたはダンジョンから無事脱出した！")
-  end
+  add_log("あなたは失われし王冠を寄贈した！")
+  add_log("この偉業はいつまでも語り継がれることだろう・・・")
   @bag.select{|c|c.treasure?}.each{|e|@score += e.pt}
   return false
 end

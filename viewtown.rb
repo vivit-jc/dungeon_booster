@@ -36,8 +36,14 @@ def draw_museum
   Window.draw_font(20,20,"寄贈した回数 #{@game.donate_count}",Font16)
   Window.draw_font(20,40,"score #{@game.score}",Font16)
   Window.draw_font(20,60,"ダンジョンを探索した回数 #{@game.explore_count}",Font16)
+  if @game.click_mode == :confirm_game_clear
+    Window.draw_font(20,140,"失われし王冠を寄贈するとゲームクリアとなります。よろしいですか？",Font16)
+    Window.draw_font(20,160,"はい",Font16,mouseover_color(@controller.pos_confirm_game_clear == 0))
+    Window.draw_font(90,160,"いいえ",Font16,mouseover_color(@controller.pos_confirm_game_clear == 1))
+  else
+    draw_back_town_button
+  end
   draw_town_set
-  draw_back_town_button
 end
 
 def draw_storage

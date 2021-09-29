@@ -92,12 +92,8 @@ class Controller
     if @game.view_status == :help
       @game.call_help
     elsif @game.click_mode == :confirm_dungeon
-      case pos_confirm_dungeon
-      when 0
-        @game.enter_the_dungeon
-      when 1
-        @game.cancel_confirm_dungeon
-      end
+      @game.enter_the_dungeon if pos_confirm_dungeon == 0
+      @game.cancel_confirm_dungeon if pos_confirm_dungeon == 1
     elsif @game.view_status == :main_view
       case pos_town
       when 0
@@ -121,6 +117,10 @@ class Controller
   end
 
   def click_on_museum
+    if @game.click_mode == :confirm_game_clear
+      @game.calc_game_clear if pos_confirm_game_clear == 0
+      @game.cancel_confirm_game_clear if pos_confirm_game_clear == 1
+    end
     @game.donate_treasure(pos_bag) if pos_bag_command == 0
     @game.back_town if pos_back_town
     click_bag_sub_button
@@ -258,6 +258,12 @@ class Controller
   def pos_confirm_dungeon
    return 0 if mcheck(290,140,330,160)
    return 1 if mcheck(340,140,400,160)
+   return false 
+  end
+
+  def pos_confirm_game_clear
+   return 0 if mcheck(20,160,60,180)
+   return 1 if mcheck(90,160,140,180)
    return false 
   end
 
