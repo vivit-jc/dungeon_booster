@@ -78,11 +78,8 @@ class Controller
     elsif @game.view_status == :select_cardset
       @game.open_door(pos_cardset) if pos_cardset
       @game.cancel_select_cardset if pos_cancel_select_cardset
-    elsif @game.view_status == :gameover or @game.view_status == :game_clear
-      if pos_back_to_title
-        @game.initialize 
-        Sound[:click].play
-      end
+    elsif @game.view_status == :gameover
+      click_back_to_title
     elsif @game.view_status == :help
       @game.call_help
     end
@@ -117,13 +114,18 @@ class Controller
   end
 
   def click_on_museum
-    if @game.click_mode == :confirm_game_clear
+    if @game.view_status == :game_clear
+      click_back_to_title
+      return
+    elsif @game.click_mode == :confirm_game_clear
       @game.calc_game_clear if pos_confirm_game_clear == 0
       @game.cancel_confirm_game_clear if pos_confirm_game_clear == 1
+      return
     end
     @game.donate_treasure(pos_bag) if pos_bag_command == 0
     @game.back_town if pos_back_town
     click_bag_sub_button
+
   end
 
   def click_on_storage
@@ -137,6 +139,13 @@ class Controller
     @game.sort_bag if pos_bag_sort
     @game.dispose_item_select if pos_dispose_item
     @game.call_help if pos_help
+  end
+
+  def click_back_to_title
+    if pos_back_to_title
+      @game.initialize 
+      Sound[:click].play
+    end
   end
 
   def pos_title_menu
