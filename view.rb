@@ -80,6 +80,8 @@ class View
       draw_help
     when :select_cardset
       draw_select_cardset
+    when :select_personality
+      draw_select_personality
     when :main_view
       case @game.place
       when :dungeon
@@ -94,6 +96,48 @@ class View
         draw_storage
       end
     end
+  end
+
+  def draw_select_personality
+    Window.draw_font(20,20,"あなたはどんな冒険者ですか？",Font20)
+    CARDDATA[:personality].each_with_index do |e,i|
+      if i == @game.personality
+        color = YELLOW
+      elsif i == @controller.pos_personality
+        color = GREEN
+      else
+        color = WHITE
+      end
+      Window.draw_font(30,80+40*i,e.name,Font20,{color: color})
+    end
+    CARDDATA[:job].each_with_index do |e,i|
+      if i == @game.job
+        color = YELLOW
+      elsif i == @controller.pos_job
+        color = GREEN
+      else
+        color = WHITE
+      end
+      Window.draw_font(270,80+40*i,e.name,Font20,{color: color})
+    end
+
+    str = nil
+    if @controller.pos_personality
+      str = CARDDATA[:personality][@controller.pos_personality].text
+    elsif @game.personality
+      str = CARDDATA[:personality][@game.personality].text
+    end
+    Window.draw_font(20,320,str,Font16) if str
+
+    str = nil
+    if @controller.pos_job
+      str = CARDDATA[:job][@controller.pos_job].text
+    elsif @game.job
+      str = CARDDATA[:job][@game.job].text
+    end
+    Window.draw_font(20,360,str,Font16) if str
+
+    Window.draw_font(460,360,"決定",Font24,mouseover_color(@controller.pos_select_personality_decide)) if @game.personality && @game.job
   end
 
   def draw_dungeon_view
@@ -136,12 +180,13 @@ class View
 
     Window.draw(20,260,@infoback)
     Window.draw_font(30,270,"ダンジョン #{LAYER[@game.layer]}",Font14)
-    Window.draw(30,296,@hp_gage)
-    Window.draw_font(30,320,"HP #{@game.hp} / #{@game.max_hp}  ATK #{@game.atk}",Font14)
-    Window.draw_font(30,340,"逃げる 残り#{@game.rest_run}回",Font14)
-    Window.draw_font(30,360,"罠回避率 #{@game.escape_trap}0%",Font14)
-    Window.draw_font(30,380,"この層のカード 残り #{@game.deck.size} 枚",Font14)
-    Window.draw_font(30,400,"捨札 #{@game.stock.size} 枚",Font14)
+    Window.draw_font(30,290,@game.get_persona,Font14)
+    Window.draw(30,316,@hp_gage)
+    Window.draw_font(30,340,"HP #{@game.hp} / #{@game.max_hp}  ATK #{@game.atk}",Font14)
+    Window.draw_font(30,360,"逃げる 残り#{@game.rest_run}回",Font14)
+    Window.draw_font(30,380,"罠回避率 #{@game.escape_trap}0%",Font14)
+    Window.draw_font(30,400,"この層のカード 残り #{@game.deck.size} 枚",Font14)
+    Window.draw_font(30,420,"捨札 #{@game.stock.size} 枚",Font14)
     
   end
 

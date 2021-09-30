@@ -71,7 +71,8 @@ end
 def draw_info_town
   Window.draw(20,260,@infoback)
   Window.draw_font(30,270,"ダンジョンの上に立つ町",Font14)
-  Window.draw_font(30,290,"所持金 #{@game.money}Ч",Font14)
+  Window.draw_font(30,290,@game.get_persona,Font14)
+  Window.draw_font(30,310,"所持金 #{@game.money}Ч",Font14)
 end
 
 def draw_back_town_button

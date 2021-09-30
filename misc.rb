@@ -115,4 +115,8 @@ def rest_run
   end
 end
 
+def get_persona
+  return CARDDATA[:personality][@personality].name+CARDDATA[:job][@job].name
+end
+
 end

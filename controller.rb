@@ -34,6 +34,9 @@ class Controller
   end
 
   def click_on_game
+    if @game.view_status == :select_personality
+      click_select_personality
+    end
     case @game.place
     when :dungeon
       click_on_dungeon
@@ -146,6 +149,12 @@ class Controller
       @game.initialize 
       Sound[:click].play
     end
+  end
+
+  def click_select_personality
+    @game.click_select_personality(:personality,pos_personality) if pos_personality
+    @game.click_select_personality(:job,pos_job) if pos_job
+    @game.click_select_personality(:decide,pos_select_personality_decide) if pos_select_personality_decide
   end
 
   def pos_title_menu
@@ -274,6 +283,28 @@ class Controller
    return 0 if mcheck(20,160,60,180)
    return 1 if mcheck(90,160,140,180)
    return false 
+  end
+
+  def pos_personality
+    CARDDATA[:personality].size.times do |i|
+      x = 30
+      y = 80+40*i
+      return i if mcheck(x,y,x+120,y+20)
+    end
+    return false
+  end
+
+  def pos_job
+    CARDDATA[:job].size.times do |i|
+      x = 270
+      y = 80+40*i
+      return i if mcheck(x,y,x+120,y+20)
+    end
+    return false
+  end
+
+  def pos_select_personality_decide
+    mcheck(460,360,510,390)
   end
 
   def get_width(str)

@@ -191,6 +191,17 @@ def click_stairs(num)
 
 end
 
+def click_select_personality(sym,num)
+  case sym
+  when :personality
+    @personality = num
+  when :job
+    @job = num
+  when :decide
+    @view_status = :main_view
+  end
+end
+
 def calc_game_clear
   @game_clear = true
   @view_status = :game_clear
