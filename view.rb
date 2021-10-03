@@ -194,12 +194,26 @@ class View
     Window.draw_font(310,30,"どの扉を開ける？",Font16)
     Window.draw_scale(-40,125,Image[:door2],0.3,0.3)
     Window.draw_font(60,360,"やめる",Font20,mouseover_color(@controller.pos_cancel_select_cardset))
-    @game.cardset.each_with_index do |cards,i|
+    3.times do |i|
+      cards = @game.cardset[i]
       Window.draw(170,80+120*i,Image[:cardset_frame]) if @controller.pos_cardset == i
-      cards.each_with_index do |c,j|
+      3.times do |j|
+        c = cards[j]
         Window.draw_scale(195+100*j-57,50+120*i-57,Image[c.kind],0.2,0.2)
         Window.draw_font(255+100*j,150+120*i,"☆"+c.tier.to_s,Font14)
       end
+    end
+
+    # 鍵付きの扉の場合
+    if @game.cardset[2][3]
+      Window.draw(180,350,Image[:lock])
+      if @game.can_unlock == 1 || @game.can_unlock == 3
+        Window.draw_font(200,434,"解錠の巻物で開ける",Font16,mouseover_color(@controller.pos_select_unlock == 0))
+      end
+      if @game.can_unlock == 2 || @game.can_unlock == 3
+        Window.draw_font(380,434,"鍵開け道具で開ける",Font16,mouseover_color(@controller.pos_select_unlock == 1))
+      end
+      Window.draw(170,320,Image[:cardset_frame]) if @controller.pos_select_unlock && @game.can_unlock > 0
     end
   end
 

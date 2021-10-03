@@ -47,7 +47,7 @@ Font100 = Font.new(100)
 
 LAYER = ["上層","中層","下層","最下層"]
 
-IMAGES = [:weapon, :shield, :scroll, :potion, :trap, :rune, :treasure, :monster, :help1, :help2, :door, :door2, :cardset_frame, :down_stairs, :up_stairs]
+IMAGES = [:weapon, :shield, :scroll, :potion, :trap, :rune, :treasure, :monster, :help1, :help2, :door, :door2, :cardset_frame, :down_stairs, :up_stairs, :lock]
 SE = [:take_item, :equip, :fight, :fire, :potion, :runaway, :rune, :sort, :stairs, :trap, :game_clear, :gameover, :click, :door]
 
 Window.height = 480

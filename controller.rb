@@ -81,6 +81,7 @@ class Controller
     elsif @game.view_status == :select_cardset
       @game.open_door(pos_cardset) if pos_cardset
       @game.cancel_select_cardset if pos_cancel_select_cardset
+      @game.unlock_door(pos_select_unlock) if pos_select_unlock
     elsif @game.view_status == :gameover
       click_back_to_title
     elsif @game.view_status == :help
@@ -305,6 +306,13 @@ class Controller
 
   def pos_select_personality_decide
     mcheck(460,360,510,390)
+  end
+
+  def pos_select_unlock
+    2.times do |i|
+      return i if mcheck(200+180*i,434,350+180*i,450)
+    end
+    return false
   end
 
   def get_width(str)

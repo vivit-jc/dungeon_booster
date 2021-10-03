@@ -20,7 +20,7 @@ include Misc
 attr_accessor :status, :page, :view_status
 attr_reader :game_status, :game_status_memo, :click_mode, :place, :bag, :deck, :dungeon, :stock, :atk, :hp, :max_hp, :log, :e_weapon, :e_shield,
 :run, :run_max, :escape_trap, :withdraw, :gameover, :dungeon_max, :using_card, :help_page, :select_mode, :cardset, :score, :layer, :money,
-:shop_item, :donate_count, :explore_count, :storage, :personality, :job 
+:shop_item, :donate_count, :explore_count, :storage, :personality, :job, :skill
 
   def initialize
 
@@ -50,6 +50,7 @@ attr_reader :game_status, :game_status_memo, :click_mode, :place, :bag, :deck, :
     @run_max = 2
     @run_max_floor = nil
     @escape_trap = 2
+    @skill = 0
     @using_card = nil
     @layer = 0
     @donate_count = 0
