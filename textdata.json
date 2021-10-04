@@ -3,8 +3,8 @@
 	    {"name":"","text":""}	
 	],
 	"monster":[
-		{"id":0,"name":"スライム","pt":2,"text":"","tier":1,"layer":1},
-		{"id":1,"name":"巨大ナメクジ","pt":3,"text":"","tier":1,"layer":1},
+		{"id":0,"name":"スライム","pt":1,"text":"","tier":1,"layer":1},
+		{"id":1,"name":"巨大ナメクジ","pt":2,"text":"","tier":1,"layer":1},
 		{"id":2,"name":"酸のスライム","pt":4,"text":"【酸】戦闘後、装備中の武器が壊れる。","tier":2,"layer":1},
 		{"id":3,"name":"スケルトン","pt":6,"text":"","tier":2,"layer":1},
 		{"id":4,"name":"大蜘蛛","pt":5,"text":"戦闘後、この階の逃げる回数-1。","tier":2,"layer":1},
@@ -46,23 +46,25 @@
 	"weapon":[
 		{"id":0,"name":"木の剣","text":"ATK+1","pt":1,"tier":1,"price":20},
 	    {"id":1,"name":"青銅の剣","text":"ATK+2","pt":2,"tier":2,"price":100},
-	    {"id":2,"name":"鋼の剣","text":"ATK+3","pt":2,"tier":2,"price":20}
+	    {"id":2,"name":"鋼の剣","text":"ATK+3","pt":2,"tier":3,"price":20}
 	],
 	"shield":[
 		{"id":0,"name":"木の盾","text":"最大HP+2","pt":2,"tier":1,"price":20},
 	    {"id":1,"name":"青銅の盾","text":"最大HP+4","pt":4,"tier":2,"price":100},
-	    {"id":2,"name":"青銅の盾","text":"最大HP+6","pt":4,"tier":2,"price":20}					
+	    {"id":2,"name":"青銅の盾","text":"最大HP+6","pt":4,"tier":3,"price":20}					
 	],
 	"rune":[
 		{"id":0,"name":"体力増強のルーン","text":"最大HP+5。","tier":1},
 		{"id":1,"name":"俊敏のルーン","text":"罠を避ける確率+10%。","tier":1},
-	    {"id":2,"name":"筋力増強のルーン","text":"ATK+1。","tier":2}
+	    {"id":2,"name":"筋力増強のルーン","text":"ATK+1。","tier":2},
+	    {"id":3,"name":"筋力増強のルーン","text":"ATK+1。","tier":3},
+	    {"id":4,"name":"筋力増強のルーン","text":"ATK+1。","tier":4}    
 	],
 	"treasure":[
 		{"id":0,"name":"立派な指輪","text":"売れば金になりそうだ。","price":20,"tier":1},
 		{"id":1,"name":"ネックレス","text":"売れば金になりそうだ。","price":40,"tier":2},
 		{"id":2,"name":"銀の彫像","text":"売れば金になりそうだ。","price":80,"tier":3},
-		{"id":3,"name":"ルビーのブローチ","text":"売れば金になりそうだ。","price":80,"tier":3},
+		{"id":3,"name":"ルビーのブローチ","text":"売れば金になりそうだ。","price":80,"tier":4},
 		{"id":4,"name":"失われし王冠","text":"売れば金になりそうだ。","price":80,"tier":5}	
 	],
 	"door":[

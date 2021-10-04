@@ -33,7 +33,6 @@ TITLE_MENU_TEXT = ["START","LOAD","OPTION"]
 DUNGEON_WIDTH = 100
 DUNGEON_HEIGHT = 100
 
-
 Font12 = Font.new(12)
 Font14 = Font.new(14)
 Font16 = Font.new(16)
@@ -46,6 +45,20 @@ Font60 = Font.new(60)
 Font100 = Font.new(100)
 
 LAYER = ["上層","中層","下層","最下層"]
+DOOR_CARDSET1 = [[[0,1],[0,3],[1,1],[1,3]],
+    [[0,1],[0,3],[1,2],[1,2]],
+    [[0,2],[0,2],[1,1],[1,3]],
+    [[0,2],[0,2],[1,2],[1,2]]]
+DOOR_CARDSET2 = [[[0,1],[0,4],[1,1],[1,4]],
+    [[0,1],[0,4],[1,2],[1,3]],
+    [[0,2],[0,3],[1,1],[1,4]],
+    [[0,2],[0,3],[1,2],[1,3]]]
+DOOR_CARDSET3 = [[[0,2],[0,4],[1,2],[1,4]],
+    [[0,2],[0,4],[1,3],[1,3]],
+    [[0,3],[0,3],[1,2],[1,4]],
+    [[0,3],[0,3],[1,3],[1,3]]]
+
+
 
 IMAGES = [:weapon, :shield, :scroll, :potion, :trap, :rune, :treasure, :monster, :help1, :help2, :door, :door2, :cardset_frame, :down_stairs, :up_stairs, :lock]
 SE = [:take_item, :equip, :fight, :fire, :potion, :runaway, :rune, :sort, :stairs, :trap, :game_clear, :gameover, :click, :door]

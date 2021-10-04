@@ -187,7 +187,6 @@ class View
     Window.draw_font(30,380,"罠回避率 #{@game.escape_trap}0%",Font14)
     Window.draw_font(30,400,"この層のカード 残り #{@game.deck.size} 枚",Font14)
     Window.draw_font(30,420,"捨札 #{@game.stock.size} 枚",Font14)
-    
   end
 
   def draw_select_cardset
@@ -197,15 +196,18 @@ class View
     3.times do |i|
       cards = @game.cardset[i]
       Window.draw(170,80+120*i,Image[:cardset_frame]) if @controller.pos_cardset == i
-      3.times do |j|
+      4.times do |j|
         c = cards[j]
+        if c == true
+          next
+        end
         Window.draw_scale(195+100*j-57,50+120*i-57,Image[c.kind],0.2,0.2)
         Window.draw_font(255+100*j,150+120*i,"☆"+c.tier.to_s,Font14)
       end
     end
 
     # 鍵付きの扉の場合
-    if @game.cardset[2][3]
+    if @game.cardset[2].last == true
       Window.draw(180,350,Image[:lock])
       if @game.can_unlock == 1 || @game.can_unlock == 3
         Window.draw_font(200,434,"解錠の巻物で開ける",Font16,mouseover_color(@controller.pos_select_unlock == 0))

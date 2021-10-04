@@ -7,7 +7,7 @@ def click_door(num)
 end
 
 def open_door(num)
-  if @cardset[num][3] #鍵付き扉の場合、音を鳴らしてreturn
+  if @cardset[num].last == true #鍵付き扉の場合、音を鳴らしてreturn
     #Sound[:unlock].play #あとで探す
     return
   end
@@ -16,6 +16,7 @@ def open_door(num)
 end
 
 def unlock_door(num)
+  return if can_unlock == 0
   if num == 0 && (can_unlock == 1 || can_unlock == 3)
     add_log("解錠の巻物を使って扉を開けた")
     @bag.delete_at @bag.index{|c|c.scroll? && c.id == 4}
@@ -31,7 +32,7 @@ end
 def can_unlock
   r = 0
   r += 1 if @bag.find{|c|c.scroll? && c.id == 4}
-  r += 2 if @skill > 0 && @job.id == 2
+  r += 2 if @skill > 0 && @job == 2
   return r
 end
 
@@ -61,33 +62,67 @@ end
 def make_cardset
   c = []
   2.times do
-    c << make_single_cardset(2)
+    c << make_single_cardset
   end
-  c << make_single_cardset(2,true)
+  c << ((@layer > 0) ? make_locked_cardset : make_single_cardset)
   return c
 end
 
-def make_single_cardset(tier,locked=false)
-  minus = [:monster,:trap]
-  plus = [:weapon,:shield,:potion,:scroll,:rune,:treasure]
+def make_single_cardset
+  kind = [[:monster,:trap],[:weapon,:shield,:potion,:scroll,:rune,:treasure]]
   t = []
-  if locked
-    3.times do
-      t << make_card_at_random(plus.sample,1)
-    end
-    t << true # 鍵付きであることの添字を追加する
-  elsif rand(2) == 0
-    t << make_card_at_random(minus.sample,2)
-    2.times do
-      t << make_card_at_random(plus.sample,1)
+  r = rand(2)
+  case @layer
+  when 0
+    [[r,2],[1-r,1],[1-r,1]].each do |e|
+      t << make_card_at_random(kind[e[0]].sample,e[1])
     end  
-  else
-    t << make_card_at_random(plus.sample,2)
-    2.times do
-      t << make_card_at_random(minus.sample,1)
-    end   
+  when 1
+    [[[r,2],[1-r,1],[1-r,1]],[[r,3],[1-r,2],[1-r,1]]].sample.each do |e|
+      t << make_card_at_random(kind[e[0]].sample,e[1])
+    end
+  when 2
+    (DOOR_CARDSET1+DOOR_CARDSET2).sample.each do |e|
+      t << make_card_at_random(kind[(e[0]-r).abs].sample,e[1])
+    end  
+  when 3
+    (DOOR_CARDSET2+DOOR_CARDSET3).sample.each do |e|
+      t << make_card_at_random(kind[(e[0]-r).abs].sample,e[1])
+    end
   end
   return t
+end
+
+def make_locked_cardset
+  kind = [[:monster,:trap],[:weapon,:shield,:potion,:scroll,:rune,:treasure]]
+  t = []
+  case @layer
+  when 1
+    [[[0,1],[1,1],[1,2]],
+    [[0,2],[1,2],[1,2]],
+    [[0,2],[1,1],[1,3]]].sample.each do |e|
+      t << make_card_at_random(kind[e[0]].sample,e[1])
+    end  
+  when 2
+    [[[0,3],[1,1],[1,4]],
+    [[0,3],[1,2],[1,3]],
+    [[0,1],[0,2],[1,1],[1,4]],
+    [[0,1],[0,2],[1,2],[1,3]]].sample.each do |e|
+      t << make_card_at_random(kind[e[0]].sample,e[1])
+    end
+  when 3
+    [[[0,4],[1,2],[1,4]],
+    [[0,4],[1,3],[1,3]],
+    [[0,1],[0,3],[1,2],[1,4]],
+    [[0,1],[0,3],[1,3],[1,3]],
+    [[0,2],[0,2],[1,2],[1,4]],
+    [[0,2],[0,2],[1,3],[1,3]]].sample.each do |e|
+      t << make_card_at_random(kind[e[0]].sample,e[1])
+    end
+  end
+  t << true
+  return t
+
 end
 
 end
