@@ -126,4 +126,25 @@ def get_persona
   return CARDDATA[:personality][@personality].name+CARDDATA[:job][@job].name
 end
 
+def blank_or_monster
+  if rand(5) == 0
+    return add_stock_monster
+  else
+    return Card.new(:blank,0)
+  end
+end
+
+def add_stock_monster
+  case @layer
+  when 0
+    return make_card_at_random(:monster,1+(rand(4)==0 ? 1 : 0))
+  when 1
+    return make_card_at_random(:monster,2+(rand(4)==0 ? 1 : 0))
+  when 2
+    return make_card_at_random(:monster,3-(rand(4)==0 ? 1 : 0))
+  when 3
+    return make_card_at_random(:monster,3)
+  end
+end
+
 end

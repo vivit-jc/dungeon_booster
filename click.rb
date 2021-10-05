@@ -147,7 +147,7 @@ def start_withdrawal
   @withdraw = true
   Sound[:click].play
   (@dungeon_max-@deck.size-@stock.size-6).times do
-    @stock << Card.new(:blank,0)
+    @stock << blank_or_monster
   end
   @stock << Stairs.new(:up_stairs,@layer)
   @dungeon = []
@@ -167,11 +167,10 @@ def click_stairs(num)
     @stock += @dungeon.reject{|c|c.trap? || c.rune? || c.stairs?} #罠、ルーン、階段以外をストックに
     temp = []
     (@dungeon_max-@stock.size-1).times do
-      temp << Card.new(:blank,0)
+      temp << blank_or_monster
     end
     temp << Stairs.new(:up_stairs,@layer)
-    @stock += temp
-    @deck_reserve[@layer] = @stock
+    @deck_reserve[@layer] = @stock + temp
     @layer += 1
     init_deck
   elsif card.up_stairs?
