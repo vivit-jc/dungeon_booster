@@ -94,7 +94,7 @@ def cancel_confirm_game_clear
 end
 
 def enter_the_dungeon
-  @layer = 2
+  @layer = 0
   @max_hp = 30
   @click_mode = nil
   init_deck

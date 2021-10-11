@@ -228,8 +228,12 @@ class Controller
     mcheck(540,370,600,400)
   end
 
+  def pos_skill_button
+    mcheck(490,410,600,440)
+  end
+
   def pos_help
-    mcheck(540,400,600,440)
+    mcheck(610,10,630,30)
   end
 
   def pos_button

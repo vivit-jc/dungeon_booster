@@ -48,12 +48,12 @@
 	"weapon":[
 		{"id":0,"name":"木の剣","text":"ATK+1","pt":1,"tier":1,"price":20},
 	    {"id":1,"name":"青銅の剣","text":"ATK+2","pt":2,"tier":2,"price":100},
-	    {"id":2,"name":"鋼の剣","text":"ATK+3","pt":2,"tier":3,"price":20}
+	    {"id":2,"name":"鋼の剣","text":"ATK+4","pt":4,"tier":3,"price":20}
 	],
 	"shield":[
-		{"id":0,"name":"木の盾","text":"最大HP+5","pt":2,"tier":1,"price":20},
-	    {"id":1,"name":"青銅の盾","text":"最大HP+10","pt":4,"tier":2,"price":100},
-	    {"id":2,"name":"鋼の盾","text":"最大HP+15","pt":4,"tier":3,"price":20}					
+		{"id":0,"name":"木の盾","text":"最大HP+5","pt":5,"tier":1,"price":20},
+	    {"id":1,"name":"青銅の盾","text":"最大HP+10","pt":10,"tier":2,"price":100},
+	    {"id":2,"name":"鋼の盾","text":"最大HP+15","pt":15,"tier":3,"price":20}					
 	],
 	"rune":[
 		{"id":0,"name":"体力増強のルーン","text":"最大HP+3。","tier":1},

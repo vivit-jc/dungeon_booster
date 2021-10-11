@@ -18,12 +18,18 @@ module Viewbag
     end
     
     # アイテム横のボタン
-    3.times do |i|
+    2.times do |i|
       Window.draw(540,330+40*i,@itembuttonback)
+    end
+    if @game.job != 0
+      Window.draw(490,410,@itembuttonback)
+      Window.draw(540,410,@itembuttonback)
+      color = mouseover_color(@controller.pos_skill_button && !@game.click_mode)
+      color = {color: BLACK} if @game.skill == 0
+      Window.draw_font(500,417,"スキル　#{@game.skill}/#{@game.skill_max}",Font16,color)    
     end
     Window.draw_font(545,337,"整理",Font16,mouseover_color((@controller.pos_bag_sort && !@game.click_mode)))
     Window.draw_font(545,377,"捨てる",Font16,mouseover_color(@controller.pos_dispose_item && !@game.click_mode))
-    Window.draw_font(545,417,"ヘルプ",Font16,mouseover_color(@controller.pos_help && !@game.click_mode))    
   end
 
   def draw_bag_command(i,card,pos)

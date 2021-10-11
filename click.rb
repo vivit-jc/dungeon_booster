@@ -198,6 +198,10 @@ def click_select_personality(sym,num)
     @job = num
   when :decide
     @view_status = :main_view
+    if @job != 0
+      @skill = 3
+      @skill_max = 3
+    end
   end
 end
 

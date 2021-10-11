@@ -53,10 +53,8 @@ end
 def make_card_at_random(kind,tier)
   if kind == :trap && tier == 4
     kind = :monster
-    p "reroll"
   elsif (kind == :weapon || kind == :shield || kind == :potion || kind == :scroll) && tier == 4
     kind = [:rune, :treasure].sample
-    p "reroll"
   end
   Card.new(kind,CARDDATA[kind].select{|c|c.tier == tier}.sample.id)
 end

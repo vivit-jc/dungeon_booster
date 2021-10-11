@@ -40,6 +40,9 @@ class View
     @cardsetback = Image.new(400,100)
     @cardsetback.box(0,0,400,100,WHITE)
 
+    @helpback = Image.new(20,20)
+    @helpback.box_fill(0,0,30,30,DARKGRAY)    
+
     @hp_gage = Image.new(180,16)
     @hp_gage.box_fill(0,0,180,16,GREEN)
     @hp_buffer = @game.hp
@@ -83,6 +86,7 @@ class View
     when :select_personality
       draw_select_personality
     when :main_view
+      draw_help_button
       case @game.place
       when :dungeon
         draw_dungeon_view
@@ -198,7 +202,7 @@ class View
       Window.draw(170,80+120*i,Image[:cardset_frame]) if @controller.pos_cardset == i
       4.times do |j|
         c = cards[j]
-        if c == true
+        if c == true || !c
           next
         end
         Window.draw_scale(195+100*j-57,50+120*i-57,Image[c.kind],0.2,0.2)

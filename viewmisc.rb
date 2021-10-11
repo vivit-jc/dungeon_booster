@@ -27,6 +27,11 @@ module Viewmisc
     Window.draw_font(30,400,"タイトルに戻る",Font20,mouseover_color(@controller.pos_back_to_title))
   end
 
+  def draw_help_button
+    Window.draw(610,10,@helpback)
+    Window.draw_font(614,10,"?",Font20,mouseover_color(@controller.pos_help && !@game.click_mode))
+  end
+
   def draw_help
     Window.draw(0,0,Image[:help1]) if @game.help_page == 0
     Window.draw(0,0,Image[:help2]) if @game.help_page == 1
