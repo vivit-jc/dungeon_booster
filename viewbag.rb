@@ -21,12 +21,19 @@ module Viewbag
     2.times do |i|
       Window.draw(540,330+40*i,@itembuttonback)
     end
-    if @game.job != 0
-      Window.draw(490,410,@itembuttonback)
+    if @game.job != 0 && !@controller.pos_bag
       Window.draw(540,410,@itembuttonback)
       color = mouseover_color(@controller.pos_skill_button && !@game.click_mode)
       color = {color: BLACK} if @game.skill == 0
-      Window.draw_font(500,417,"スキル　#{@game.skill}/#{@game.skill_max}",Font16,color)    
+      Window.draw_font(545,417,"スキル",Font16,color)
+      job_text = [nil,["ファイヤーボール","敵1体に10ダメージ。"],["鍵開け道具","鍵付きの扉を開ける。"],["キュアウーンズ","体力を全回復する。"]]
+      if @controller.pos_skill_button
+        Window.draw_font(260,400,"#{job_text[@game.job][0]} #{@game.skill}/#{@game.skill_max}",Font14)
+        Window.draw_font(260,420,job_text[@game.job][1],Font14)
+      end
+      @game.skill.times do |i|
+        Window.draw(582-20*i,443,@skill_gage)
+      end
     end
     Window.draw_font(545,337,"整理",Font16,mouseover_color((@controller.pos_bag_sort && !@game.click_mode)))
     Window.draw_font(545,377,"捨てる",Font16,mouseover_color(@controller.pos_dispose_item && !@game.click_mode))

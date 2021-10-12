@@ -309,7 +309,7 @@ class Controller
   end
 
   def pos_select_personality_decide
-    mcheck(460,360,510,390)
+    mcheck(460,400,510,430)
   end
 
   def pos_select_unlock

@@ -48,6 +48,9 @@ class View
     @hp_buffer = @game.hp
     @max_hp_buffer = @game.max_hp
 
+    @skill_gage = Image.new(17,4)
+    @skill_gage.box_fill(0,0,17,4,YELLOW)
+
   end
 
   def draw
@@ -141,7 +144,7 @@ class View
     end
     Window.draw_font(20,360,str,Font16) if str
 
-    Window.draw_font(460,360,"決定",Font24,mouseover_color(@controller.pos_select_personality_decide)) if @game.personality && @game.job
+    Window.draw_font(460,400,"決定",Font24,mouseover_color(@controller.pos_select_personality_decide)) if @game.personality && @game.job
   end
 
   def draw_dungeon_view
