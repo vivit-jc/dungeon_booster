@@ -48,8 +48,18 @@ def click_target_monster(num)
   return false unless @dungeon[num].monster?
   card = @using_card[:card]
   monster = @dungeon[num]
-  #対象を選ぶタイプの巻物の処理
-  if card.scroll? and card.select_target
+
+  if card == :skill #ファイヤーボール
+    Sound[:fire].play
+    add_log("ファイヤーボールを唱えた "+monster.name+"に10ダメージを与えた")
+    monster.hp -= 10
+    if monster.hp <= 0
+      add_log(monster.name+"を倒した")
+      dungeon.delete_at num
+    end
+    @skill -= 1
+    cancel_target_select
+  elsif card.scroll? and card.select_target #対象を選ぶタイプの巻物の処理
     case(card.id)
     when 0 #火炎
       Sound[:fire].play
@@ -188,6 +198,21 @@ def click_stairs(num)
   end
   Sound[:stairs].play
 
+end
+
+def use_skill
+  return unless @job == 1 || @job == 3
+  return if @skill == 0
+  if @job == 1
+    @click_mode = :select_monster
+    @using_card = {card: :skill}
+    add_log("どれに対して使う？")
+  elsif @job == 3
+    @hp = @max_hp
+    Sound[:rune].play
+    add_log("キュアウーンズを唱えた。HPが全回復した。")
+    @skill -= 1
+  end
 end
 
 def click_select_personality(sym,num)

@@ -58,7 +58,12 @@ class Controller
       if pos_dungeon and @game.dungeon[pos_dungeon].monster?
         @game.click_target_monster(pos_dungeon) 
       else
-        @game.add_log(@game.using_card[:card].name+"を使うのをやめた")
+        if @game.using_card[:card] == :skill
+          str = "スキル"
+        else
+          str = @game.using_card[:card].name
+        end
+        @game.add_log(str+"を使うのをやめた")
         @game.cancel_target_select
       end
       return
@@ -143,6 +148,7 @@ class Controller
     @game.sort_bag if pos_bag_sort
     @game.dispose_item_select if pos_dispose_item
     @game.call_help if pos_help
+    @game.use_skill if pos_skill_button
   end
 
   def click_back_to_title
