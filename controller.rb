@@ -216,7 +216,7 @@ class Controller
 
   def pos_cardset
     3.times do |i|
-      y = 80 + 120*i
+      y = 86 + 120*i
       return i if mcheck(170,y,570,y+100)
     end
     return false

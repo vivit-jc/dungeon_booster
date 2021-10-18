@@ -125,7 +125,9 @@ def get_persona
 end
 
 def blank_or_monster
-  if rand(5) == 0
+  p = 5
+  p += 3 if @personality == 0
+  if rand(p) == 0
     return add_stock_monster
   else
     return Card.new(:blank,0)

@@ -202,7 +202,7 @@ class View
     Window.draw_font(60,360,"やめる",Font20,mouseover_color(@controller.pos_cancel_select_cardset))
     3.times do |i|
       cards = @game.cardset[i]
-      Window.draw(170,80+120*i,Image[:cardset_frame]) if @controller.pos_cardset == i
+      Window.draw(170,86+120*i,Image[:cardset_frame]) if @controller.pos_cardset == i
       4.times do |j|
         c = cards[j]
         if c == true || !c
@@ -210,6 +210,8 @@ class View
         end
         Window.draw_scale(195+100*j-57,50+120*i-57,Image[c.kind],0.2,0.2)
         Window.draw_font(255+100*j,150+120*i,"☆"+c.tier.to_s,Font14)
+        Window.draw_font(220+100*j+get_padding(14,7,c.name.size),165+120*i,c.name,Font14) if @game.personality == 2 && c.monster?
+        
       end
     end
 

@@ -3,7 +3,9 @@ module Item
 # アイテムとルーンの処理をまとめたmodule
 
 def take_item(num)
-  if @bag.size >= 8
+  bag_max = 8
+  bag_max += 1 if @personality == 4
+  if @bag.size >= bag_max
     add_log("バッグがいっぱいだ")
     return 
   end

@@ -50,4 +50,8 @@ module Viewmisc
     return {color: color}
   end
 
+  def get_padding(font_size,max_strsize,strsize)
+    font_size*(max_strsize-strsize)/2
+  end
+
 end

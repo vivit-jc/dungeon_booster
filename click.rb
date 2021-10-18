@@ -201,16 +201,19 @@ def click_stairs(num)
 end
 
 def use_skill
-  return unless @job == 1 || @job == 3
+  return if @job == 0
   return if @skill == 0
-  if @job == 1
+  case @job
+  when 1
     @click_mode = :select_monster
     @using_card = {card: :skill}
     add_log("どれに対して使う？")
-  elsif @job == 3
+  when 2
+    add_log("手入れは行き届いている。")
+  when 3
     @hp = @max_hp
     Sound[:rune].play
-    add_log("キュアウーンズを唱えた。HPが全回復した。")
+    add_log("キュアウーンズを唱えた HPが全回復した。")
     @skill -= 1
   end
 end
@@ -227,6 +230,7 @@ def click_select_personality(sym,num)
       @skill = 3
       @skill_max = 3
     end
+    @escape_trap += 2 if @personality == 1
   end
 end
 
