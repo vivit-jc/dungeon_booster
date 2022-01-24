@@ -147,4 +147,8 @@ def add_stock_monster
   end
 end
 
+def in_dungeon?
+  return @place == :dungeon
+end
+
 end

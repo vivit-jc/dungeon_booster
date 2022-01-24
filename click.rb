@@ -21,13 +21,19 @@ end
 def click_monster(num,com)
   card = @dungeon[num]
   if com == 0 #戦う
+    end_battle = calc_monster_before(num,com)
+    if end_battle
+      # モンスターを削除して戦闘を終了する
+      @dungeon.delete_at num
+      return
+    end
     d = card.hp
     d -= @atk
     d = 0 if d < 0
     damage(d,card.name)
     Sound[:fight].play
     add_log(card.name+"を倒した") if @hp > 0
-    calc_monster(num,com)
+    calc_monster_after(num,com)
     @dungeon.delete_at num
   elsif com == 1 #逃げる
     if rest_run <= 0
@@ -203,6 +209,7 @@ end
 def use_skill
   return if @job == 0
   return if @skill == 0
+  return unless in_dungeon?
   case @job
   when 1
     @click_mode = :select_monster
